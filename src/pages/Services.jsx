@@ -1,169 +1,315 @@
 import { motion } from 'framer-motion';
+import { Palette, Code, Target, TrendingUp, CheckCircle, ArrowRight, Zap, Users, Globe, Smartphone } from 'lucide-react';
 
-function Services() {
+const Services = () => {
   const services = [
     {
-      id: "web-design",
-      title: "Web Design",
-      description: "We create beautiful, responsive websites that look great on any device and help you achieve your business goals.",
+      id: "diseno-web",
+      title: "Diseño Web Personalizado",
+      description: "Creamos diseños únicos que reflejan la identidad de tu marca y conectan emocionalmente con tu audiencia objetivo.",
       features: [
-        "Custom design tailored to your brand",
-        "Responsive layouts for all devices",
-        "User experience optimization",
-        "Visual identity and branding",
-        "Wireframing and prototyping"
+        "Diseño responsive para todos los dispositivos",
+        "UX/UI optimizado para conversión",
+        "Branding coherente y profesional",
+        "Wireframes y prototipos interactivos",
+        "Diseño centrado en el usuario"
       ],
-      icon: (
-        <svg className="w-16 h-16 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
-        </svg>
-      )
+      icon: <Palette className="w-16 h-16" />,
+      price: "Desde $1,500",
+      duration: "2-4 semanas"
     },
     {
-      id: "development",
-      title: "Web Development",
-      description: "We build fast, reliable, and feature-rich web applications using modern technologies and best practices.",
+      id: "desarrollo-frontend",
+      title: "Desarrollo Frontend Avanzado",
+      description: "Desarrollamos sitios web modernos con las últimas tecnologías para garantizar rendimiento excepcional y funcionalidad perfecta.",
       features: [
-        "Frontend development (React, Vue, Angular)",
-        "Backend development (Node.js, Python, PHP)",
-        "E-commerce solutions",
-        "Content management systems",
-        "API development and integration"
+        "React, Next.js y tecnologías modernas",
+        "WordPress personalizado y optimizado",
+        "Optimización SEO técnico",
+        "Integración con APIs y servicios",
+        "Código limpio y mantenible"
       ],
-      icon: (
-        <svg className="w-16 h-16 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
-        </svg>
-      )
+      icon: <Code className="w-16 h-16" />,
+      price: "Desde $2,500",
+      duration: "3-6 semanas"
     },
     {
-      id: "branding",
-      title: "Branding",
-      description: "We help you establish a strong brand identity that resonates with your target audience and sets you apart from competitors.",
+      id: "optimizacion-leads",
+      title: "Optimización para Leads",
+      description: "Diseñamos cada elemento pensando en la conversión, maximizando el potencial de generación de leads de tu sitio web.",
       features: [
-        "Logo design and visual identity",
-        "Brand strategy and positioning",
-        "Brand guidelines and style guides",
-        "Marketing collateral",
-        "Brand messaging and voice"
+        "Landing pages de alta conversión",
+        "Formularios optimizados y A/B testing",
+        "Llamadas a la acción estratégicas",
+        "Análisis de comportamiento de usuarios",
+        "Optimización de embudo de ventas"
       ],
-      icon: (
-        <svg className="w-16 h-16 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"></path>
-        </svg>
-      )
+      icon: <Target className="w-16 h-16" />,
+      price: "Desde $1,200",
+      duration: "1-3 semanas"
     },
     {
-      id: "marketing",
-      title: "Digital Marketing",
-      description: "We help you reach your target audience and grow your business through effective digital marketing strategies.",
+      id: "analisis-mejora",
+      title: "Análisis y Mejora Continua",
+      description: "Monitoreamos el rendimiento de tu sitio web y implementamos mejoras continuas basadas en datos reales.",
       features: [
-        "Search engine optimization (SEO)",
-        "Social media marketing",
-        "Content marketing",
-        "Email marketing campaigns",
-        "Analytics and performance tracking"
+        "Google Analytics y configuración avanzada",
+        "Reportes mensuales detallados",
+        "Optimización continua de conversión",
+        "Monitoreo de velocidad y rendimiento",
+        "Recomendaciones estratégicas"
       ],
-      icon: (
-        <svg className="w-16 h-16 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"></path>
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"></path>
-        </svg>
-      )
+      icon: <TrendingUp className="w-16 h-16" />,
+      price: "Desde $800/mes",
+      duration: "Servicio continuo"
+    }
+  ];
+
+  const additionalServices = [
+    {
+      icon: <Globe className="w-8 h-8" />,
+      title: "E-commerce",
+      description: "Tiendas online completas con sistemas de pago integrados"
+    },
+    {
+      icon: <Smartphone className="w-8 h-8" />,
+      title: "Apps Móviles",
+      description: "Aplicaciones web progresivas (PWA) para móviles"
+    },
+    {
+      icon: <Zap className="w-8 h-8" />,
+      title: "Mantenimiento",
+      description: "Soporte técnico y actualizaciones regulares"
+    },
+    {
+      icon: <Users className="w-8 h-8" />,
+      title: "Consultoría",
+      description: "Estrategia digital y consultoría especializada"
+    }
+  ];
+
+  const process = [
+    {
+      step: "01",
+      title: "Consulta Inicial",
+      description: "Analizamos tus necesidades, objetivos y audiencia objetivo para crear una estrategia personalizada."
+    },
+    {
+      step: "02",
+      title: "Diseño y Prototipo",
+      description: "Creamos wireframes y prototipos interactivos para validar la experiencia de usuario antes del desarrollo."
+    },
+    {
+      step: "03",
+      title: "Desarrollo",
+      description: "Desarrollamos tu sitio web utilizando las mejores tecnologías y prácticas de la industria."
+    },
+    {
+      step: "04",
+      title: "Optimización",
+      description: "Optimizamos para velocidad, SEO y conversión, asegurándonos de que todo funcione perfectamente."
+    },
+    {
+      step: "05",
+      title: "Lanzamiento",
+      description: "Lanzamos tu sitio web y te proporcionamos toda la documentación y capacitación necesaria."
+    },
+    {
+      step: "06",
+      title: "Soporte",
+      description: "Ofrecemos soporte continuo y mejoras basadas en el análisis de datos y feedback de usuarios."
     }
   ];
 
   return (
-    <>
-      <section className="py-20 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <motion.div 
-            className="max-w-3xl mx-auto text-center"
+    <div className="min-h-screen bg-gray-900 text-white">
+      {/* Hero Section */}
+      <section className="pt-32 pb-20 px-4">
+        <div className="max-w-7xl mx-auto text-center">
+          <motion.h1 
+            className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-purple-600 bg-clip-text text-transparent"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.8 }}
           >
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">Our Services</h1>
-            <p className="text-xl text-gray-600">
-              We offer a comprehensive range of services to help you build and grow your online presence.
+            Nuestros Servicios
+          </motion.h1>
+          <motion.p 
+            className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+          >
+            Soluciones completas de diseño web enfocadas en generar resultados medibles para tu negocio
+          </motion.p>
+        </div>
+      </section>
+
+      {/* Main Services */}
+      <section className="px-4 pb-20">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {services.map((service, index) => (
+              <motion.div
+                key={service.id}
+                className="bg-gray-800 rounded-3xl p-8 hover:bg-gray-750 transition-all duration-300 group"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+              >
+                <div className="flex items-start gap-6">
+                  <div className="text-blue-400 group-hover:text-purple-400 transition-colors duration-300 flex-shrink-0">
+                    {service.icon}
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-2xl font-bold mb-3">{service.title}</h3>
+                    <p className="text-gray-300 mb-6 leading-relaxed">{service.description}</p>
+                    
+                    <ul className="space-y-3 mb-6">
+                      {service.features.map((feature, idx) => (
+                        <li key={idx} className="flex items-start text-gray-300">
+                          <CheckCircle className="w-5 h-5 text-green-400 mr-3 flex-shrink-0 mt-0.5" />
+                          <span className="text-sm">{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+                    
+                    <div className="flex items-center justify-between pt-4 border-t border-gray-700">
+                      <div>
+                        <div className="text-2xl font-bold text-blue-400">{service.price}</div>
+                        <div className="text-sm text-gray-400">{service.duration}</div>
+                      </div>
+                      <motion.button
+                        className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-6 py-3 rounded-full font-semibold flex items-center gap-2"
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        Solicitar
+                        <ArrowRight className="w-4 h-4" />
+                      </motion.button>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Additional Services */}
+      <section className="px-4 pb-20">
+        <div className="max-w-7xl mx-auto">
+          <motion.h2 
+            className="text-3xl md:text-4xl font-bold text-center mb-12"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            Servicios Adicionales
+          </motion.h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {additionalServices.map((service, index) => (
+              <motion.div
+                key={service.title}
+                className="bg-gray-800 rounded-2xl p-6 text-center hover:bg-gray-750 transition-all duration-300 group"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+              >
+                <div className="text-blue-400 group-hover:text-purple-400 transition-colors duration-300 mb-4 flex justify-center">
+                  {service.icon}
+                </div>
+                <h3 className="text-lg font-bold mb-2">{service.title}</h3>
+                <p className="text-gray-300 text-sm">{service.description}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Process Section */}
+      <section className="px-4 pb-20 bg-gray-800/50">
+        <div className="max-w-7xl mx-auto">
+          <motion.div 
+            className="text-center mb-16"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <h2 className="text-3xl md:text-4xl font-bold mb-6">Nuestro Proceso</h2>
+            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+              Un proceso probado que garantiza resultados excepcionales en cada proyecto
             </p>
+          </motion.div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {process.map((step, index) => (
+              <motion.div
+                key={step.step}
+                className="relative"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+              >
+                <div className="bg-gray-800 rounded-2xl p-6 h-full">
+                  <div className="text-4xl font-bold text-blue-400 mb-4">{step.step}</div>
+                  <h3 className="text-xl font-bold mb-3">{step.title}</h3>
+                  <p className="text-gray-300 leading-relaxed">{step.description}</p>
+                </div>
+                {index < process.length - 1 && (
+                  <div className="hidden lg:block absolute top-1/2 -right-4 transform -translate-y-1/2">
+                    <ArrowRight className="w-6 h-6 text-gray-600" />
+                  </div>
+                )}
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="px-4 pb-20">
+        <div className="max-w-4xl mx-auto text-center">
+          <motion.div
+            className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-3xl p-12"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+          >
+            <h2 className="text-3xl md:text-4xl font-bold mb-6">
+              ¿Listo para comenzar tu proyecto?
+            </h2>
+            <p className="text-xl mb-8 opacity-90">
+              Obtén una consulta gratuita y descubre cómo podemos ayudarte a alcanzar tus objetivos
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <motion.button
+                className="bg-white text-blue-600 px-8 py-4 rounded-full font-semibold text-lg hover:bg-gray-100 transition-colors duration-300"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                Consulta Gratuita
+              </motion.button>
+              <motion.button
+                className="border-2 border-white text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-white hover:text-blue-600 transition-all duration-300"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                Ver Portafolio
+              </motion.button>
+            </div>
           </motion.div>
         </div>
       </section>
-
-      {services.map((service, index) => (
-        <section 
-          id={service.id}
-          key={service.id} 
-          className={`py-20 ${index % 2 === 1 ? 'bg-gray-50' : 'bg-white'}`}
-        >
-          <div className="container mx-auto px-4">
-            <div className="flex flex-col md:flex-row items-center">
-              <motion.div 
-                className={`md:w-1/2 mb-10 md:mb-0 ${index % 2 === 0 ? 'md:pr-10 order-1' : 'md:pl-10 order-2'}`}
-                initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5 }}
-              >
-                <div className="mb-6">{service.icon}</div>
-                <h2 className="text-3xl font-bold mb-6">{service.title}</h2>
-                <p className="text-gray-600 mb-6">
-                  {service.description}
-                </p>
-                <ul className="space-y-3">
-                  {service.features.map((feature, i) => (
-                    <li key={i} className="flex items-start">
-                      <svg className="w-5 h-5 text-green-500 mr-3 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
-                      </svg>
-                      <span>{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-                <div className="mt-8">
-                  <a 
-                    href="#contact" 
-                    className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition duration-200 inline-block"
-                  >
-                    Get Started
-                  </a>
-                </div>
-              </motion.div>
-              <motion.div 
-                className={`md:w-1/2 ${index % 2 === 0 ? 'order-2' : 'order-1'}`}
-                initial={{ opacity: 0, x: index % 2 === 0 ? 50 : -50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5 }}
-              >
-                <div className="bg-gray-200 rounded-lg h-80 flex items-center justify-center">
-                  <p className="text-gray-500 text-lg">Service Image</p>
-                </div>
-              </motion.div>
-            </div>
-          </div>
-        </section>
-      ))}
-
-      <section id="contact" className="py-20 bg-blue-600 text-white">
-        <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-3xl font-bold mb-6">Ready to Get Started?</h2>
-            <p className="text-xl mb-8">
-              Contact us today to discuss your project and how we can help you achieve your goals.
-            </p>
-            <a 
-              href="/contact" 
-              className="bg-white text-blue-600 hover:bg-gray-100 font-medium py-3 px-8 rounded-lg transition duration-200 inline-block"
-            >
-              Contact Us
-            </a>
-          </div>
-        </div>
-      </section>
-    </>
+    </div>
   );
-}
+};
 
 export default Services;
+

@@ -1,197 +1,323 @@
 import { motion } from 'framer-motion';
+import { Users, Award, Target, Heart, CheckCircle, ArrowRight } from 'lucide-react';
 
-function About() {
-  const teamMembers = [
+const About = () => {
+  const values = [
     {
-      name: "Alex Johnson",
-      role: "Founder & CEO",
-      bio: "Alex has over 15 years of experience in web development and design.",
-      image: "https://via.placeholder.com/150"
+      icon: <Target className="w-8 h-8" />,
+      title: "Enfoque en Resultados",
+      description: "Cada diseño está pensado para generar conversiones y hacer crecer tu negocio."
     },
     {
-      name: "Sarah Williams",
-      role: "Lead Designer",
-      bio: "Sarah brings creative vision and user-centered design principles to every project.",
-      image: "https://via.placeholder.com/150"
+      icon: <Heart className="w-8 h-8" />,
+      title: "Pasión por el Diseño",
+      description: "Amamos lo que hacemos y se refleja en cada proyecto que entregamos."
     },
     {
-      name: "Michael Chen",
-      role: "Senior Developer",
-      bio: "Michael specializes in frontend architecture and performance optimization.",
-      image: "https://via.placeholder.com/150"
+      icon: <Users className="w-8 h-8" />,
+      title: "Colaboración Cercana",
+      description: "Trabajamos de la mano contigo para asegurar que tu visión se haga realidad."
     },
     {
-      name: "Emma Davis",
-      role: "Marketing Specialist",
-      bio: "Emma helps clients maximize their online presence and reach their target audience.",
-      image: "https://via.placeholder.com/150"
+      icon: <Award className="w-8 h-8" />,
+      title: "Calidad Premium",
+      description: "Utilizamos las mejores prácticas y tecnologías para garantizar excelencia."
     }
   ];
 
+  const team = [
+    {
+      name: "Ana García",
+      role: "Directora Creativa",
+      description: "10+ años creando experiencias digitales que conectan marcas con usuarios.",
+      image: "/api/placeholder/300/300"
+    },
+    {
+      name: "Carlos Ruiz",
+      role: "Desarrollador Senior",
+      description: "Especialista en React y tecnologías modernas, enfocado en performance.",
+      image: "/api/placeholder/300/300"
+    },
+    {
+      name: "María López",
+      role: "Estratega UX/UI",
+      description: "Experta en optimización de conversión y experiencia de usuario.",
+      image: "/api/placeholder/300/300"
+    }
+  ];
+
+  const stats = [
+    { number: "150+", label: "Proyectos Completados" },
+    { number: "5", label: "Años de Experiencia" },
+    { number: "98%", label: "Clientes Satisfechos" },
+    { number: "24h", label: "Tiempo de Respuesta" }
+  ];
+
+  const achievements = [
+    "Certificados en Google Analytics y Google Ads",
+    "Especialistas en WordPress y React",
+    "Experiencia con más de 50 industrias diferentes",
+    "Metodología ágil y entregas puntuales",
+    "Soporte post-lanzamiento incluido",
+    "Garantía de satisfacción del 100%"
+  ];
+
   return (
-    <>
-      <section className="py-20 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <motion.div 
-            className="max-w-3xl mx-auto text-center"
+    <div className="min-h-screen bg-gray-900 text-white">
+      {/* Hero Section */}
+      <section className="pt-32 pb-20 px-4">
+        <div className="max-w-7xl mx-auto text-center">
+          <motion.h1 
+            className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-purple-600 bg-clip-text text-transparent"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.8 }}
           >
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">About Us</h1>
-            <p className="text-xl text-gray-600">
-              Learn more about our team and our mission to create beautiful, functional websites.
+            Sobre Nosotros
+          </motion.h1>
+          <motion.p 
+            className="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+          >
+            Somos un equipo apasionado de diseñadores y desarrolladores web comprometidos con transformar ideas en experiencias digitales exitosas
+          </motion.p>
+        </div>
+      </section>
+
+      {/* Mission Section */}
+      <section className="px-4 pb-20">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+            >
+              <h2 className="text-3xl md:text-4xl font-bold mb-6">Nuestra Misión</h2>
+              <p className="text-gray-300 text-lg leading-relaxed mb-6">
+                Creemos que cada negocio merece una presencia digital que no solo se vea increíble, sino que también genere resultados reales. Nuestro objetivo es ayudar a empresas de todos los tamaños a conectar con su audiencia y hacer crecer su negocio a través del poder del diseño web estratégico.
+              </p>
+              <p className="text-gray-300 text-lg leading-relaxed mb-8">
+                Combinamos creatividad, tecnología y estrategia para crear sitios web que no solo impresionan visualmente, sino que también convierten visitantes en clientes leales.
+              </p>
+              <motion.button
+                className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-4 rounded-full font-semibold flex items-center gap-2"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                Conoce nuestro trabajo
+                <ArrowRight className="w-5 h-5" />
+              </motion.button>
+            </motion.div>
+            
+            <motion.div
+              className="relative"
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+            >
+              <div className="bg-gradient-to-br from-blue-600 to-purple-600 rounded-3xl p-8 text-center">
+                <div className="grid grid-cols-2 gap-6">
+                  {stats.map((stat, index) => (
+                    <motion.div
+                      key={stat.label}
+                      className="text-center"
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.5, delay: index * 0.1 }}
+                    >
+                      <div className="text-3xl md:text-4xl font-bold mb-2">{stat.number}</div>
+                      <div className="text-blue-100 font-medium">{stat.label}</div>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Values Section */}
+      <section className="px-4 pb-20 bg-gray-800/50">
+        <div className="max-w-7xl mx-auto">
+          <motion.div 
+            className="text-center mb-16"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <h2 className="text-3xl md:text-4xl font-bold mb-6">Nuestros Valores</h2>
+            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+              Los principios que guían cada proyecto y decisión que tomamos
             </p>
           </motion.div>
-        </div>
-      </section>
-
-      <section className="py-20">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row items-center">
-            <motion.div 
-              className="md:w-1/2 mb-10 md:mb-0 md:pr-10"
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
-            >
-              <h2 className="text-3xl font-bold mb-6">Our Story</h2>
-              <p className="text-gray-600 mb-6">
-                Founded in 2010, our company began with a simple mission: to make web development 
-                more accessible and efficient. We recognized that many businesses struggled to 
-                create professional websites that truly represented their brand and engaged their 
-                customers.
-              </p>
-              <p className="text-gray-600 mb-6">
-                Over the years, we've refined our approach, embracing new technologies and design 
-                principles to create templates that are not only beautiful but also functional and 
-                easy to customize. Our team of designers and developers work closely together to 
-                ensure that every template we create meets the highest standards of quality and 
-                performance.
-              </p>
-              <p className="text-gray-600">
-                Today, our templates are used by thousands of businesses and individuals around 
-                the world, helping them establish a strong online presence and connect with their 
-                audience.
-              </p>
-            </motion.div>
-            <motion.div 
-              className="md:w-1/2"
-              initial={{ opacity: 0, x: 50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
-            >
-              <div className="bg-gray-200 rounded-lg h-80 flex items-center justify-center">
-                <p className="text-gray-500 text-lg">Image Placeholder</p>
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      <section className="py-20 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold mb-4">Our Values</h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              These core principles guide everything we do.
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            <motion.div 
-              className="bg-white p-8 rounded-lg shadow-md"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-            >
-              <div className="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mb-6 mx-auto">
-                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
-                </svg>
-              </div>
-              <h3 className="text-xl font-semibold mb-3 text-center">Quality</h3>
-              <p className="text-gray-600 text-center">
-                We never compromise on quality. Every template is thoroughly tested to ensure it meets our high standards.
-              </p>
-            </motion.div>
-            
-            <motion.div 
-              className="bg-white p-8 rounded-lg shadow-md"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-            >
-              <div className="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mb-6 mx-auto">
-                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                </svg>
-              </div>
-              <h3 className="text-xl font-semibold mb-3 text-center">Innovation</h3>
-              <p className="text-gray-600 text-center">
-                We stay at the forefront of web development, constantly exploring new technologies and design trends.
-              </p>
-            </motion.div>
-            
-            <motion.div 
-              className="bg-white p-8 rounded-lg shadow-md"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-            >
-              <div className="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mb-6 mx-auto">
-                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
-                </svg>
-              </div>
-              <h3 className="text-xl font-semibold mb-3 text-center">Customer Focus</h3>
-              <p className="text-gray-600 text-center">
-                We design with our users in mind, creating templates that are intuitive and easy to customize.
-              </p>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      <section className="py-20">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold mb-4">Our Team</h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Meet the talented individuals behind our templates.
-            </p>
-          </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {teamMembers.map((member, index) => (
-              <motion.div 
-                key={index}
-                className="bg-white rounded-lg overflow-hidden shadow-md"
+            {values.map((value, index) => (
+              <motion.div
+                key={value.title}
+                className="bg-gray-800 rounded-2xl p-6 text-center hover:bg-gray-750 transition-all duration-300 group"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
               >
-                <div className="bg-gray-200 h-48 flex items-center justify-center">
-                  <p className="text-gray-500">Photo Placeholder</p>
+                <div className="text-blue-400 group-hover:text-purple-400 transition-colors duration-300 mb-4 flex justify-center">
+                  {value.icon}
                 </div>
-                <div className="p-6">
-                  <h3 className="text-xl font-semibold mb-1">{member.name}</h3>
-                  <p className="text-blue-600 mb-4">{member.role}</p>
-                  <p className="text-gray-600">{member.bio}</p>
-                </div>
+                <h3 className="text-lg font-bold mb-3">{value.title}</h3>
+                <p className="text-gray-300 text-sm leading-relaxed">{value.description}</p>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
-    </>
+
+      {/* Team Section */}
+      <section className="px-4 pb-20">
+        <div className="max-w-7xl mx-auto">
+          <motion.div 
+            className="text-center mb-16"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <h2 className="text-3xl md:text-4xl font-bold mb-6">Nuestro Equipo</h2>
+            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+              Profesionales apasionados con la experiencia y creatividad para hacer realidad tu visión
+            </p>
+          </motion.div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {team.map((member, index) => (
+              <motion.div
+                key={member.name}
+                className="bg-gray-800 rounded-3xl p-8 text-center hover:bg-gray-750 transition-all duration-300 group"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+              >
+                <div className="w-32 h-32 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full mx-auto mb-6 flex items-center justify-center">
+                  <Users className="w-16 h-16 text-white opacity-50" />
+                </div>
+                <h3 className="text-xl font-bold mb-2">{member.name}</h3>
+                <p className="text-blue-400 font-medium mb-4">{member.role}</p>
+                <p className="text-gray-300 text-sm leading-relaxed">{member.description}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Achievements Section */}
+      <section className="px-4 pb-20 bg-gray-800/50">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+            >
+              <h2 className="text-3xl md:text-4xl font-bold mb-6">¿Por qué elegirnos?</h2>
+              <p className="text-gray-300 text-lg leading-relaxed mb-8">
+                Nuestra experiencia, metodología y compromiso con la excelencia nos distinguen en el mercado del diseño web.
+              </p>
+              <div className="space-y-4">
+                {achievements.map((achievement, index) => (
+                  <motion.div
+                    key={achievement}
+                    className="flex items-start gap-3"
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                  >
+                    <CheckCircle className="w-6 h-6 text-green-400 flex-shrink-0 mt-0.5" />
+                    <span className="text-gray-300">{achievement}</span>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+            
+            <motion.div
+              className="relative"
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+            >
+              <div className="bg-gray-800 rounded-3xl p-8">
+                <h3 className="text-2xl font-bold mb-6 text-center">Proceso de Trabajo</h3>
+                <div className="space-y-6">
+                  {[
+                    { step: "01", title: "Consulta", desc: "Entendemos tus necesidades" },
+                    { step: "02", title: "Estrategia", desc: "Planificamos la solución" },
+                    { step: "03", title: "Diseño", desc: "Creamos la experiencia" },
+                    { step: "04", title: "Desarrollo", desc: "Construimos tu sitio" },
+                    { step: "05", title: "Lanzamiento", desc: "Publicamos y optimizamos" }
+                  ].map((item, index) => (
+                    <motion.div
+                      key={item.step}
+                      className="flex items-center gap-4"
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.5, delay: index * 0.1 }}
+                    >
+                      <div className="w-12 h-12 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center font-bold text-sm">
+                        {item.step}
+                      </div>
+                      <div>
+                        <h4 className="font-semibold">{item.title}</h4>
+                        <p className="text-gray-400 text-sm">{item.desc}</p>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="px-4 pb-20">
+        <div className="max-w-4xl mx-auto text-center">
+          <motion.div
+            className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-3xl p-12"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+          >
+            <h2 className="text-3xl md:text-4xl font-bold mb-6">
+              ¿Listo para trabajar juntos?
+            </h2>
+            <p className="text-xl mb-8 opacity-90">
+              Conversemos sobre tu proyecto y descubre cómo podemos ayudarte a alcanzar tus objetivos
+            </p>
+            <motion.button
+              className="bg-white text-blue-600 px-8 py-4 rounded-full font-semibold text-lg hover:bg-gray-100 transition-colors duration-300"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              Iniciar Conversación
+            </motion.button>
+          </motion.div>
+        </div>
+      </section>
+    </div>
   );
-}
+};
 
 export default About;
+

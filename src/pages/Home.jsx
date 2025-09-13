@@ -1,104 +1,226 @@
 import { motion } from 'framer-motion';
+import { ArrowRight, CheckCircle, Star, Users, Zap, Target, Palette, Code, TrendingUp } from 'lucide-react';
+import { AnimatedCounter, RevealOnScroll } from '@/components/InteractiveElements';
 
 function Hero() {
   return (
-    <section className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-20">
-      <div className="container mx-auto px-4">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      {/* Background gradient */}
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-900 via-purple-900 to-gray-900"></div>
+      
+      {/* Animated background elements */}
+      <div className="absolute inset-0">
         <motion.div 
-          className="max-w-3xl"
-          initial={{ opacity: 0, y: 20 }}
+          className="absolute top-20 left-20 w-72 h-72 bg-blue-500/20 rounded-full blur-3xl"
+          animate={{ 
+            scale: [1, 1.2, 1],
+            opacity: [0.3, 0.6, 0.3]
+          }}
+          transition={{ 
+            duration: 4, 
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        />
+        <motion.div 
+          className="absolute bottom-20 right-20 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl"
+          animate={{ 
+            scale: [1.2, 1, 1.2],
+            opacity: [0.4, 0.7, 0.4]
+          }}
+          transition={{ 
+            duration: 5, 
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: 1
+          }}
+        />
+      </div>
+
+      <div className="relative z-10 container mx-auto px-4 text-center">
+        <motion.div 
+          className="max-w-5xl mx-auto"
+          initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0.8 }}
         >
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
-            Build Beautiful Websites with Our Template
-          </h1>
-          <p className="text-xl mb-8">
-            A modern, responsive template designed to help you create stunning websites quickly and efficiently.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4">
-            <a 
-              href="#features" 
-              className="bg-white text-blue-600 hover:bg-gray-100 px-6 py-3 rounded-lg font-medium text-center"
-              onClick={(e) => {
-                e.preventDefault();
-                document.getElementById('features').scrollIntoView({ behavior: 'smooth', block: 'start' });
-              }}
+          <motion.h1 
+            className="text-5xl md:text-7xl lg:text-8xl font-bold mb-8 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+          >
+            Diseños Web que
+            <motion.span 
+              className="block"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.6 }}
             >
-              Explore Features
-            </a>
-            <a 
-              href="#contact" 
-              className="bg-transparent border-2 border-white hover:bg-white hover:text-blue-600 px-6 py-3 rounded-lg font-medium text-center"
-              onClick={(e) => {
-                e.preventDefault();
-                document.getElementById('contact').scrollIntoView({ behavior: 'smooth', block: 'start' });
-              }}
+              Generan Resultados
+            </motion.span>
+          </motion.h1>
+          
+          <motion.p 
+            className="text-xl md:text-2xl text-gray-300 mb-12 max-w-3xl mx-auto leading-relaxed"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+          >
+            Transformamos tu presencia digital con sitios web modernos, optimizados para conversión y diseñados para hacer crecer tu negocio
+          </motion.p>
+          
+          <motion.div 
+            className="flex flex-col sm:flex-row gap-6 justify-center items-center"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.6 }}
+          >
+            <motion.button
+              className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-4 rounded-full font-semibold text-lg flex items-center gap-2 shadow-2xl group"
+              whileHover={{ scale: 1.05, boxShadow: "0 20px 40px rgba(59, 130, 246, 0.3)" }}
+              whileTap={{ scale: 0.95 }}
             >
-              Get Started
-            </a>
-          </div>
+              Consulta Gratuita
+              <motion.div
+                animate={{ x: [0, 5, 0] }}
+                transition={{ duration: 1.5, repeat: Infinity }}
+              >
+                <ArrowRight className="w-5 h-5" />
+              </motion.div>
+            </motion.button>
+            
+            <motion.button
+              className="border-2 border-white/30 hover:border-white/60 text-white px-8 py-4 rounded-full font-semibold text-lg backdrop-blur-sm hover:bg-white/10 transition-all duration-300 group"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <motion.span
+                className="group-hover:text-blue-300 transition-colors duration-300"
+              >
+                Ver Portafolio
+              </motion.span>
+            </motion.button>
+          </motion.div>
         </motion.div>
       </div>
     </section>
   );
 }
 
-function Features() {
-  const features = [
+function TrustedBrands() {
+  const brands = [
+    "WordPress", "Framer", "Shopify", "Webflow", "React", "Next.js"
+  ];
+
+  return (
+    <section className="py-20 bg-gray-800/50">
+      <div className="container mx-auto px-4">
+        <RevealOnScroll>
+          <div className="text-center mb-12">
+            <p className="text-gray-400 text-lg mb-8">Trabajamos con las mejores tecnologías</p>
+            <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12">
+              {brands.map((brand, index) => (
+                <motion.div
+                  key={brand}
+                  className="text-gray-300 font-semibold text-lg hover:text-white transition-colors duration-300 cursor-pointer"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  whileHover={{ 
+                    scale: 1.1,
+                    color: "#60a5fa"
+                  }}
+                >
+                  {brand}
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </RevealOnScroll>
+      </div>
+    </section>
+  );
+}
+
+function Services() {
+  const services = [
     {
-      title: "Responsive Design",
-      description: "Looks great on all devices, from mobile phones to desktop computers.",
-      icon: (
-        <svg className="w-12 h-12 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 18h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
-        </svg>
-      )
+      icon: <Palette className="w-12 h-12" />,
+      title: "Diseño Web Personalizado",
+      description: "Creamos diseños únicos que reflejan la identidad de tu marca y conectan con tu audiencia objetivo.",
+      features: ["Diseño responsive", "UX/UI optimizado", "Branding coherente"]
     },
     {
-      title: "Modern Technologies",
-      description: "Built with the latest web technologies to ensure optimal performance.",
-      icon: (
-        <svg className="w-12 h-12 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
-        </svg>
-      )
+      icon: <Code className="w-12 h-12" />,
+      title: "Desarrollo Frontend",
+      description: "Desarrollamos sitios web modernos con las últimas tecnologías para garantizar rendimiento y funcionalidad.",
+      features: ["React & Next.js", "WordPress avanzado", "Optimización SEO"]
     },
     {
-      title: "Customizable Components",
-      description: "Easily customize components to match your brand and requirements.",
-      icon: (
-        <svg className="w-12 h-12 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1H4a2 2 0 110-4h1a1 1 0 001-1V7a1 1 0 011-1h3a1 1 0 001-1V4z"></path>
-        </svg>
-      )
+      icon: <Target className="w-12 h-12" />,
+      title: "Optimización para Leads",
+      description: "Diseñamos cada elemento pensando en la conversión, desde formularios hasta llamadas a la acción.",
+      features: ["Landing pages", "Formularios optimizados", "A/B Testing"]
+    },
+    {
+      icon: <TrendingUp className="w-12 h-12" />,
+      title: "Análisis y Mejora",
+      description: "Monitoreamos el rendimiento de tu sitio y implementamos mejoras continuas basadas en datos.",
+      features: ["Google Analytics", "Reportes mensuales", "Optimización continua"]
     }
   ];
 
   return (
-    <section id="features" className="py-20 bg-gray-50">
+    <section className="py-20 bg-gray-900">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Key Features</h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Our template comes with everything you need to build a professional website.
-          </p>
-        </div>
+        <RevealOnScroll>
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+              Nuestros Servicios
+            </h2>
+            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+              Ofrecemos soluciones completas para llevar tu presencia digital al siguiente nivel
+            </p>
+          </div>
+        </RevealOnScroll>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {features.map((feature, index) => (
-            <motion.div 
-              key={index}
-              className="bg-white p-8 rounded-lg shadow-md"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-            >
-              <div className="mb-4">{feature.icon}</div>
-              <h3 className="text-xl font-semibold mb-3">{feature.title}</h3>
-              <p className="text-gray-600">{feature.description}</p>
-            </motion.div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {services.map((service, index) => (
+            <RevealOnScroll key={index} delay={index * 0.1}>
+              <motion.div 
+                className="bg-gray-800 p-8 rounded-2xl hover:bg-gray-750 transition-all duration-300 group hover:transform hover:scale-105 cursor-pointer"
+                whileHover={{ 
+                  y: -10,
+                  boxShadow: "0 20px 40px rgba(0,0,0,0.3)"
+                }}
+              >
+                <motion.div 
+                  className="text-blue-400 mb-6 group-hover:text-purple-400 transition-colors duration-300"
+                  whileHover={{ rotate: [0, -10, 10, 0] }}
+                  transition={{ duration: 0.5 }}
+                >
+                  {service.icon}
+                </motion.div>
+                <h3 className="text-xl font-bold mb-4 text-white">{service.title}</h3>
+                <p className="text-gray-300 mb-6 leading-relaxed">{service.description}</p>
+                <ul className="space-y-2">
+                  {service.features.map((feature, idx) => (
+                    <motion.li 
+                      key={idx} 
+                      className="flex items-center text-sm text-gray-400"
+                      initial={{ opacity: 0, x: -10 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      transition={{ delay: idx * 0.1 }}
+                    >
+                      <CheckCircle className="w-4 h-4 text-green-400 mr-2 flex-shrink-0" />
+                      {feature}
+                    </motion.li>
+                  ))}
+                </ul>
+              </motion.div>
+            </RevealOnScroll>
           ))}
         </div>
       </div>
@@ -106,47 +228,52 @@ function Features() {
   );
 }
 
-function About() {
+function Results() {
+  const stats = [
+    { number: 150, label: "Proyectos Completados", icon: <Zap className="w-8 h-8" />, suffix: "+" },
+    { number: 98, label: "Clientes Satisfechos", icon: <Star className="w-8 h-8" />, suffix: "%" },
+    { number: 300, label: "Aumento Promedio en Leads", icon: <TrendingUp className="w-8 h-8" />, suffix: "%" },
+    { number: 50, label: "Empresas Confiaron en Nosotros", icon: <Users className="w-8 h-8" />, suffix: "+" }
+  ];
+
   return (
-    <section id="about" className="py-20">
+    <section className="py-20 bg-gradient-to-r from-blue-600 to-purple-600">
       <div className="container mx-auto px-4">
-        <div className="flex flex-col md:flex-row items-center">
-          <motion.div 
-            className="md:w-1/2 mb-10 md:mb-0 md:pr-10"
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-          >
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">About Our Template</h2>
-            <p className="text-gray-600 mb-6">
-              Our template is designed with modern web standards and best practices in mind. 
-              We've focused on creating a flexible foundation that can be adapted to a wide 
-              range of websites and applications.
+        <RevealOnScroll>
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white">
+              Resultados que Hablan por Sí Solos
+            </h2>
+            <p className="text-xl text-blue-100 max-w-3xl mx-auto">
+              Nuestro enfoque en la conversión genera resultados medibles para nuestros clientes
             </p>
-            <p className="text-gray-600 mb-6">
-              Whether you're building a portfolio, business website, or e-commerce platform, 
-              our template provides the tools and components you need to create a professional 
-              and engaging user experience.
-            </p>
-            <a href="#" className="text-blue-600 font-medium flex items-center">
-              Learn more about our approach
-              <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
-              </svg>
-            </a>
-          </motion.div>
-          <motion.div 
-            className="md:w-1/2"
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-          >
-            <div className="bg-gray-200 rounded-lg h-80 flex items-center justify-center">
-              <p className="text-gray-500 text-lg">Image Placeholder</p>
-            </div>
-          </motion.div>
+          </div>
+        </RevealOnScroll>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {stats.map((stat, index) => (
+            <RevealOnScroll key={index} delay={index * 0.1}>
+              <motion.div 
+                className="text-center bg-white/10 backdrop-blur-sm rounded-2xl p-8 hover:bg-white/20 transition-all duration-300"
+                whileHover={{ 
+                  scale: 1.05,
+                  boxShadow: "0 20px 40px rgba(255,255,255,0.1)"
+                }}
+              >
+                <motion.div 
+                  className="text-white mb-4 flex justify-center"
+                  whileHover={{ rotate: 360 }}
+                  transition={{ duration: 0.6 }}
+                >
+                  {stat.icon}
+                </motion.div>
+                <div className="text-4xl md:text-5xl font-bold text-white mb-2">
+                  <AnimatedCounter end={stat.number} suffix={stat.suffix} />
+                </div>
+                <div className="text-blue-100 font-medium">{stat.label}</div>
+              </motion.div>
+            </RevealOnScroll>
+          ))}
         </div>
       </div>
     </section>
@@ -156,51 +283,68 @@ function About() {
 function Testimonials() {
   const testimonials = [
     {
-      quote: "This template saved us countless hours of development time. The code is clean and well-structured.",
-      author: "Jane Smith",
-      role: "Frontend Developer"
+      quote: "Nuestro sitio web generó un 250% más de leads en los primeros 3 meses. El diseño es increíble y la funcionalidad perfecta.",
+      author: "María González",
+      role: "CEO, TechStart",
+      rating: 5
     },
     {
-      quote: "We were able to launch our website in record time thanks to this template. Highly recommended!",
-      author: "John Davis",
-      role: "CEO, TechStart"
+      quote: "El equipo entendió perfectamente nuestra visión y la transformó en una experiencia digital excepcional. Altamente recomendados.",
+      author: "Carlos Ruiz",
+      role: "Director de Marketing, InnovaLab",
+      rating: 5
     },
     {
-      quote: "The responsive design works flawlessly across all devices. Our mobile traffic has increased by 40%.",
-      author: "Lisa Johnson",
-      role: "Marketing Director"
+      quote: "Profesionales, creativos y orientados a resultados. Nuestro ROI se duplicó gracias a la optimización de conversión.",
+      author: "Ana Martínez",
+      role: "Fundadora, EcoSolutions",
+      rating: 5
     }
   ];
 
   return (
-    <section id="testimonials" className="py-20 bg-blue-600 text-white">
+    <section className="py-20 bg-gray-800">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">What People Say</h2>
-          <p className="text-xl opacity-80 max-w-3xl mx-auto">
-            Don't just take our word for it. Here's what others have to say about our template.
-          </p>
-        </div>
+        <RevealOnScroll>
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white">
+              Lo que Dicen Nuestros Clientes
+            </h2>
+            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+              La satisfacción de nuestros clientes es nuestra mejor carta de presentación
+            </p>
+          </div>
+        </RevealOnScroll>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {testimonials.map((testimonial, index) => (
-            <motion.div 
-              key={index}
-              className="bg-white bg-opacity-10 p-8 rounded-lg backdrop-blur-sm"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-            >
-              <svg className="w-10 h-10 text-blue-300 mb-4" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
-              </svg>
-              <p className="mb-6 text-lg">{testimonial.quote}</p>
-              <div>
-                <p className="font-semibold">{testimonial.author}</p>
-                <p className="opacity-80">{testimonial.role}</p>
-              </div>
-            </motion.div>
+            <RevealOnScroll key={index} delay={index * 0.1}>
+              <motion.div 
+                className="bg-gray-700 p-8 rounded-2xl hover:bg-gray-650 transition-all duration-300 h-full"
+                whileHover={{ 
+                  y: -5,
+                  boxShadow: "0 20px 40px rgba(0,0,0,0.3)"
+                }}
+              >
+                <div className="flex mb-4">
+                  {[...Array(testimonial.rating)].map((_, i) => (
+                    <motion.div
+                      key={i}
+                      initial={{ opacity: 0, scale: 0 }}
+                      whileInView={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: i * 0.1 }}
+                    >
+                      <Star className="w-5 h-5 text-yellow-400 fill-current" />
+                    </motion.div>
+                  ))}
+                </div>
+                <p className="text-gray-300 mb-6 text-lg leading-relaxed italic">"{testimonial.quote}"</p>
+                <div>
+                  <p className="font-bold text-white">{testimonial.author}</p>
+                  <p className="text-gray-400">{testimonial.role}</p>
+                </div>
+              </motion.div>
+            </RevealOnScroll>
           ))}
         </div>
       </div>
@@ -208,75 +352,60 @@ function Testimonials() {
   );
 }
 
-function Contact() {
+function FinalCTA() {
   return (
-    <section id="contact" className="py-20">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Get In Touch</h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Have questions about our template? We're here to help.
-          </p>
-        </div>
-        
-        <div className="max-w-3xl mx-auto">
-          <form className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
-                  Name
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="Your name"
-                />
-              </div>
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-                  Email
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="your@email.com"
-                />
-              </div>
-            </div>
-            <div>
-              <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-1">
-                Subject
-              </label>
-              <input
-                type="text"
-                id="subject"
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                placeholder="How can we help?"
-              />
-            </div>
-            <div>
-              <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
-                Message
-              </label>
-              <textarea
-                id="message"
-                rows="5"
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                placeholder="Your message..."
-              ></textarea>
-            </div>
-            <div>
-              <button
-                type="submit"
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition duration-200"
+    <section className="py-20 bg-gray-900">
+      <div className="container mx-auto px-4 text-center">
+        <RevealOnScroll>
+          <motion.div 
+            className="max-w-4xl mx-auto"
+            whileInView={{ scale: [0.9, 1] }}
+            transition={{ duration: 0.6 }}
+          >
+            <h2 className="text-4xl md:text-6xl font-bold mb-8 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+              ¿Listo para Transformar tu Negocio?
+            </h2>
+            <p className="text-xl md:text-2xl text-gray-300 mb-12 leading-relaxed">
+              Obtén una consulta gratuita y descubre cómo podemos ayudarte a generar más leads y hacer crecer tu negocio
+            </p>
+            
+            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+              <motion.button
+                className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-10 py-5 rounded-full font-bold text-xl flex items-center gap-3 shadow-2xl group"
+                whileHover={{ 
+                  scale: 1.05,
+                  boxShadow: "0 20px 40px rgba(59, 130, 246, 0.4)"
+                }}
+                whileTap={{ scale: 0.95 }}
               >
-                Send Message
-              </button>
+                Consulta Gratuita
+                <motion.div
+                  animate={{ x: [0, 5, 0] }}
+                  transition={{ duration: 1.5, repeat: Infinity }}
+                >
+                  <ArrowRight className="w-6 h-6" />
+                </motion.div>
+              </motion.button>
+              
+              <motion.button
+                className="border-2 border-gray-600 hover:border-gray-400 text-gray-300 hover:text-white px-10 py-5 rounded-full font-bold text-xl transition-all duration-300"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                Ver Casos de Éxito
+              </motion.button>
             </div>
-          </form>
-        </div>
+            
+            <motion.div 
+              className="mt-12 text-gray-400"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ delay: 0.5 }}
+            >
+              <p>✓ Consulta sin compromiso ✓ Propuesta personalizada ✓ Resultados garantizados</p>
+            </motion.div>
+          </motion.div>
+        </RevealOnScroll>
       </div>
     </section>
   );
@@ -286,12 +415,14 @@ function Home() {
   return (
     <>
       <Hero />
-      <Features />
-      <About />
+      <TrustedBrands />
+      <Services />
+      <Results />
       <Testimonials />
-      <Contact />
+      <FinalCTA />
     </>
   );
 }
 
 export default Home;
+
