@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, Palette } from "lucide-react";
+import { Menu, X } from "lucide-react"; // Se eliminó la importación de 'Palette'
 import { motion } from "framer-motion";
+import logo from "@/assets/logo.png"; // 1. Importa tu nuevo logo
 
 function Navigation() {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -25,11 +26,10 @@ function Navigation() {
 		<header className="bg-card/95 backdrop-blur-sm sticky top-0 z-50 border-b border-secondary">
 			<nav className="container mx-auto px-6 py-4 flex justify-between items-center">
 				{/* Logo */}
-				<Link to="/" className="flex items-center space-x-2">
-					<div className="bg-gradient-to-r from-primary to-accent p-2 rounded-lg">
-						<Palette className="w-6 h-6 text-white" />
-					</div>
-					<span className="text-xl font-bold text-text">WebDesign Pro</span>
+				{/* 2. Reemplaza el ícono y texto por tu imagen */}
+				<Link to="/" className="flex items-center">
+					<img src={logo} alt="Dealvia Logo" className="h-10" />{" "}
+					{/* Ajusta la altura (h-8) según necesites */}
 				</Link>
 
 				{/* Desktop Navigation */}

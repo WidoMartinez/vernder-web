@@ -1,5 +1,6 @@
 import { Linkedin } from "lucide-react";
 import { handleAnchorClick } from "@/utils/scrollUtils";
+import logo from "@/assets/logo.png"; // 1. Importa tu logo
 
 function Footer() {
 	const handleLinkClick = (e) => {
@@ -12,7 +13,9 @@ function Footer() {
 				<div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
 					{/* Logo and Description */}
 					<div>
-						<h3 className="text-xl font-bold text-text mb-4">Dealvia</h3>
+						{/* 2. Reemplaza el texto h3 por tu imagen */}
+						<img src={logo} alt="nubestilo" className="h-18 mb-4" />{" "}
+						{/* Ajusta la altura y el margen inferior */}
 						<p className="text-text-secondary leading-relaxed">
 							Your premier destination for exclusive deals and unbeatable
 							savings.
