@@ -10,17 +10,14 @@ function Hero() {
 		offset: ["start start", "end end"],
 	});
 
-	// Transform for 3D rotation effect - starts inclined and becomes upright
 	const rotateX = useTransform(scrollYProgress, [0, 0.5], [15, 0]);
 	const scale = useTransform(scrollYProgress, [0, 0.5], [0.9, 1]);
 
 	return (
 		<section ref={container} className="relative py-20 px-6 overflow-hidden">
-			{/* Background gradient */}
 			<div className="absolute inset-0 bg-gradient-to-br from-background via-secondary to-background"></div>
 
 			<div className="relative container mx-auto text-center">
-				{/* Main content */}
 				<Motion.div
 					initial={{ opacity: 0, y: 30 }}
 					animate={{ opacity: 1, y: 0 }}
@@ -29,23 +26,22 @@ function Hero() {
 				>
 					<h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
 						<span className="bg-gradient-to-b from-primary to-accent bg-clip-text text-transparent">
-							Your Deals, Clients & Tasks
+							Tu Página Web Profesional
 							<br />
-							All in One Dashboard
+							Desde $30.000 CLP
 						</span>
 					</h1>
 
 					<p className="text-xl md:text-2xl text-text-secondary mb-8 max-w-3xl mx-auto leading-relaxed">
-						Track performance, manage pipelines, and close deals faster with a
-						CRM built for modern teams
+						Lanza tu presencia en línea con una página web de una sola sección,
+						optimizada para captar clientes y con entrega rápida.
 					</p>
 
 					<div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-						<RainbowButton size="lg">Get Started Free</RainbowButton>
+						<RainbowButton size="lg">Quiero mi Página Web</RainbowButton>
 					</div>
 				</Motion.div>
 
-				{/* Dashboard Preview */}
 				<Motion.div
 					initial={{ opacity: 0, y: 50 }}
 					animate={{ opacity: 1, y: 0 }}
@@ -60,7 +56,7 @@ function Hero() {
 				>
 					<img
 						src={crmDashboard}
-						alt="CRM Dashboard"
+						alt="Dashboard de página web"
 						className="w-full rounded-lg shadow-2xl border border-secondary"
 					/>
 				</Motion.div>

@@ -1,33 +1,33 @@
 import { motion } from "framer-motion";
-import crmDashboardBl from "../assets/crm-dashboard-bl.png";
-import crmDashboardTr from "../assets/crm-dashboard-tr.png";
-import crmDashboardR from "../assets/crm-dashboard-r.png";
+import step1Image from "../assets/crm-dashboard-bl.png"; // Reemplazar con imágenes adecuadas
+import step2Image from "../assets/crm-dashboard-tr.png"; // Reemplazar con imágenes adecuadas
+import step3Image from "../assets/crm-dashboard-r.png"; // Reemplazar con imágenes adecuadas
 
 function HowItWorks() {
 	const steps = [
 		{
-			stepNumber: "STEP 1",
-			title: "Sign Up in Minutes",
+			stepNumber: "PASO 1",
+			title: "Elige tu Plan y Contáctanos",
 			description:
-				"Start your journey by signing up in just a few minutes. No hassle, no complexity.",
-			image: crmDashboardBl,
-			alt: "Dashboard signup interface",
+				"Revisa nuestros planes y elige el que mejor se adapte a ti. Luego, envíanos un mensaje para iniciar el proceso.",
+			image: step1Image,
+			alt: "Persona eligiendo un plan de página web",
 		},
 		{
-			stepNumber: "STEP 2",
-			title: "Create Your Workspace",
+			stepNumber: "PASO 2",
+			title: "Envíanos tu Información",
 			description:
-				"Set up your workspace and invite team members. Organize projects and tasks effortlessly.",
-			image: crmDashboardTr,
-			alt: "Dashboard workspace interface",
+				"Te pediremos los textos, logo e imágenes para tu sitio. Si no los tienes, ¡no te preocupes! Podemos ayudarte.",
+			image: step2Image,
+			alt: "Carpeta con información y contenido para la web",
 		},
 		{
-			stepNumber: "STEP 3",
-			title: "Collaborate and Achieve",
+			stepNumber: "PASO 3",
+			title: "¡Lanzamos tu Página Web!",
 			description:
-				"Experience the power of seamless collaboration. Achieve more together with our intuitive tools.",
-			image: crmDashboardR,
-			alt: "Dashboard analytics interface",
+				"En pocos días, tu página web estará lista, publicada y funcionando para atraer a tus nuevos clientes.",
+			image: step3Image,
+			alt: "Cohete despegando, simbolizando el lanzamiento de la web",
 		},
 	];
 
@@ -42,137 +42,43 @@ function HowItWorks() {
 					className="text-center mb-16"
 				>
 					<h3 className="text-sm font-semibold text-primary tracking-wider uppercase mb-4">
-						HOW TO USE?
+						PROCESO SIMPLE
 					</h3>
 					<h2 className="text-4xl md:text-5xl font-bold text-text mb-6">
-						How it works?
+						Tu Página Web en 3 Simples Pasos
 					</h2>
 				</motion.div>
 
-				<div className="max-w-7xl mx-auto">
-					{/* Desktop Layout */}
-					<div className="hidden lg:grid lg:grid-cols-2 lg:grid-rows-2 gap-6 h-[900px]">
-						{/* Step 1 - Top Left */}
+				<div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto">
+					{steps.map((step, index) => (
 						<motion.div
+							key={index}
 							initial={{ opacity: 0, y: 30 }}
 							whileInView={{ opacity: 1, y: 0 }}
-							whileHover={{ y: -8, scale: 1.02 }}
-							transition={{ duration: 0.6 }}
+							transition={{ duration: 0.6, delay: index * 0.1 }}
 							viewport={{ once: true }}
-							className="relative rounded-2xl overflow-hidden bg-card border border-primary/30 p-8 flex flex-col cursor-pointer"
+							className="relative rounded-2xl overflow-hidden bg-card border border-primary/30 p-6 flex flex-col"
 						>
 							<div className="mb-6">
 								<span className="text-xs font-semibold text-primary tracking-wider uppercase mb-2 block">
-									{steps[0].stepNumber}
+									{step.stepNumber}
 								</span>
-								<h3 className="text-2xl font-bold text-text mb-4">
-									{steps[0].title}
+								<h3 className="text-xl font-bold text-text mb-4">
+									{step.title}
 								</h3>
 								<p className="text-text-secondary leading-relaxed">
-									{steps[0].description}
+									{step.description}
 								</p>
 							</div>
-							<div className="flex-1 rounded-xl overflow-hidden bg-secondary">
+							<div className="mt-auto h-56 rounded-xl overflow-hidden bg-secondary">
 								<img
-									src={steps[0].image}
-									alt={steps[0].alt}
+									src={step.image}
+									alt={step.alt}
 									className="w-full h-full object-cover"
 								/>
 							</div>
 						</motion.div>
-
-						{/* Step 3 - Right Side (Full Height) */}
-						<motion.div
-							initial={{ opacity: 0, y: 30 }}
-							whileInView={{ opacity: 1, y: 0 }}
-							whileHover={{ y: -8, scale: 1.02 }}
-							transition={{ duration: 0.6, delay: 0.2 }}
-							viewport={{ once: true }}
-							className="relative rounded-2xl overflow-hidden bg-card border border-primary/30 p-8 flex flex-col row-span-2 cursor-pointer"
-						>
-							<div className="mb-6">
-								<span className="text-xs font-semibold text-primary tracking-wider uppercase mb-2 block">
-									{steps[2].stepNumber}
-								</span>
-								<h3 className="text-2xl font-bold text-text mb-4">
-									{steps[2].title}
-								</h3>
-								<p className="text-text-secondary leading-relaxed">
-									{steps[2].description}
-								</p>
-							</div>
-							<div className="flex-1 rounded-xl overflow-hidden bg-secondary">
-								<img
-									src={steps[2].image}
-									alt={steps[2].alt}
-									className="w-full h-full object-cover"
-								/>
-							</div>
-						</motion.div>
-
-						{/* Step 2 - Bottom Left */}
-						<motion.div
-							initial={{ opacity: 0, y: 30 }}
-							whileInView={{ opacity: 1, y: 0 }}
-							whileHover={{ y: -8, scale: 1.02 }}
-							transition={{ duration: 0.6, delay: 0.1 }}
-							viewport={{ once: true }}
-							className="relative rounded-2xl overflow-hidden bg-card border border-primary/30 p-8 flex flex-col cursor-pointer"
-						>
-							<div className="mb-6">
-								<span className="text-xs font-semibold text-primary tracking-wider uppercase mb-2 block">
-									{steps[1].stepNumber}
-								</span>
-								<h3 className="text-2xl font-bold text-text mb-4">
-									{steps[1].title}
-								</h3>
-								<p className="text-text-secondary leading-relaxed">
-									{steps[1].description}
-								</p>
-							</div>
-							<div className="flex-1 rounded-xl overflow-hidden bg-secondary">
-								<img
-									src={steps[1].image}
-									alt={steps[1].alt}
-									className="w-full h-full object-cover"
-								/>
-							</div>
-						</motion.div>
-					</div>
-
-					{/* Mobile Layout */}
-					<div className="lg:hidden space-y-8">
-						{steps.map((step, index) => (
-							<motion.div
-								key={index}
-								initial={{ opacity: 0, y: 30 }}
-								whileInView={{ opacity: 1, y: 0 }}
-								whileHover={{ y: -8, scale: 1.02 }}
-								transition={{ duration: 0.6, delay: index * 0.1 }}
-								viewport={{ once: true }}
-								className="relative rounded-2xl overflow-hidden bg-card border border-primary/30 p-6 cursor-pointer"
-							>
-								<div className="mb-6">
-									<span className="text-xs font-semibold text-primary tracking-wider uppercase mb-2 block">
-										{step.stepNumber}
-									</span>
-									<h3 className="text-xl font-bold text-text mb-4">
-										{step.title}
-									</h3>
-									<p className="text-text-secondary leading-relaxed">
-										{step.description}
-									</p>
-								</div>
-								<div className="h-64 rounded-xl overflow-hidden bg-secondary">
-									<img
-										src={step.image}
-										alt={step.alt}
-										className="w-full h-full object-cover"
-									/>
-								</div>
-							</motion.div>
-						))}
-					</div>
+					))}
 				</div>
 			</div>
 		</section>

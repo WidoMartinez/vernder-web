@@ -1,50 +1,50 @@
 import { motion } from "framer-motion";
 import {
-	FileText,
-	Globe,
-	MessageCircle,
-	BarChart3,
-	Users,
-	CheckCircle,
+	Smartphone,
+	Mail,
+	Rocket,
+	GaugeCircle,
+	ShieldCheck,
+	MessageSquare,
 } from "lucide-react";
 
 function Features() {
 	const features = [
 		{
-			icon: BarChart3,
-			title: "Analytics at a Glance",
+			icon: Smartphone,
+			title: "Diseño 100% Adaptable",
 			description:
-				"Get instant insights into revenue, expenses, and client growth. Interactive charts give you real-time clarity on performance trends.",
+				"Tu página se verá increíble en cualquier dispositivo, ya sea un celular, tablet o computador de escritorio.",
 		},
 		{
-			icon: Users,
-			title: "Client Management Made Easy",
+			icon: MessageSquare,
+			title: "Botón de WhatsApp",
 			description:
-				"Keep all client info in one place. Manage contacts, track interactions, and never miss an opportunity.",
+				"Facilita el contacto directo. Tus clientes podrán enviarte un WhatsApp con un solo clic desde tu página web.",
 		},
 		{
-			icon: CheckCircle,
-			title: "Smart Task Scheduling",
+			icon: Mail,
+			title: "Formulario de Contacto",
 			description:
-				"Stay ahead with task reminders and deadlines. Assign, track, and complete tasks seamlessly.",
+				"Recibe las consultas de tus futuros clientes directamente en tu correo electrónico de forma ordenada y profesional.",
 		},
 		{
-			icon: MessageCircle,
-			title: "Real-Time Notifications",
+			icon: GaugeCircle,
+			title: "Optimización SEO Básica",
 			description:
-				"Get alerts for deal updates, new clients, and task changes. Stay informed without constantly checking your dashboard.",
+				"Configuramos tu sitio con las bases para que los motores de búsqueda como Google puedan encontrarlo más fácilmente.",
 		},
 		{
-			icon: Globe,
-			title: "Deal Pipeline Tracking",
+			icon: Rocket,
+			title: "Entrega Ultra Rápida",
 			description:
-				"Visualize every stage of your deals. Monitor progress and forecast revenue with confidence.",
+				"Sabemos que tu tiempo es oro. Entregamos tu página web lista para funcionar en plazos que te sorprenderán.",
 		},
 		{
-			icon: FileText,
-			title: "Quick Export & Sharing",
+			icon: ShieldCheck,
+			title: "Seguridad y Confianza",
 			description:
-				"Share reports and export data in seconds. Collaborate effortlessly with team members and stakeholders.",
+				"Todos nuestros sitios incluyen certificado de seguridad (SSL) para proteger los datos y generar confianza en tus visitantes.",
 		},
 	];
 
@@ -59,10 +59,10 @@ function Features() {
 					className="text-center mb-16"
 				>
 					<h3 className="text-sm font-semibold text-[var(--primary-color)] tracking-wider uppercase mb-4">
-						FEATURES
+						CARACTERÍSTICAS
 					</h3>
 					<h2 className="text-4xl md:text-5xl font-bold text-[var(--text-primary)] mb-6">
-						Why Choose our Platform?
+						Todo lo que tu Negocio Necesita para Despegar
 					</h2>
 				</motion.div>
 
