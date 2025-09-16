@@ -6,7 +6,6 @@ import ScrollToAnchor from "@/components/ScrollToAnchor";
 import {
 	ScrollToTop,
 	ParallaxBackground,
-	FloatingContactButton,
 	ScrollProgress,
 	LoadingSpinner, // Importamos el Spinner
 } from "@/components/InteractiveElements";
@@ -47,7 +46,6 @@ function App() {
 				</main>
 				<Footer />
 				<ScrollToTop />
-				<FloatingContactButton />
 			</div>
 		</Router>
 	);
