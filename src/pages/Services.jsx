@@ -3,11 +3,11 @@ import {
 	Palette,
 	Code,
 	ShoppingCart,
-	Star,
 	Layers, // Ícono para Webflow
 	CheckCircle,
 	ArrowRight,
 } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Services = () => {
 	const services = [
@@ -143,14 +143,16 @@ const Services = () => {
 													{service.duration}
 												</div>
 											</div>
-											<motion.button
-												className="bg-gradient-to-r from-primary to-accent hover:from-primary-hover hover:to-primary text-white px-6 py-3 rounded-full font-semibold flex items-center gap-2"
-												whileHover={{ scale: 1.05 }}
-												whileTap={{ scale: 0.95 }}
-											>
-												Solicitar
-												<ArrowRight className="w-4 h-4" />
-											</motion.button>
+											<Link to="/contacto">
+												<motion.button
+													className="bg-gradient-to-r from-primary to-accent hover:from-primary-hover hover:to-primary text-white px-6 py-3 rounded-full font-semibold flex items-center gap-2"
+													whileHover={{ scale: 1.05 }}
+													whileTap={{ scale: 0.95 }}
+												>
+													Solicitar
+													<ArrowRight className="w-4 h-4" />
+												</motion.button>
+											</Link>
 										</div>
 									</div>
 								</div>
@@ -177,13 +179,15 @@ const Services = () => {
 							alcanzar tus objetivos.
 						</p>
 						<div className="flex flex-col sm:flex-row gap-4 justify-center">
-							<motion.button
-								className="bg-white text-primary px-8 py-4 rounded-full font-semibold text-lg hover:bg-gray-100 transition-colors duration-300"
-								whileHover={{ scale: 1.05 }}
-								whileTap={{ scale: 0.95 }}
-							>
-								Cotización Gratuita
-							</motion.button>
+							<Link to="/contacto">
+								<motion.button
+									className="bg-white text-primary px-8 py-4 rounded-full font-semibold text-lg hover:bg-gray-100 transition-colors duration-300"
+									whileHover={{ scale: 1.05 }}
+									whileTap={{ scale: 0.95 }}
+								>
+									Cotización Gratuita
+								</motion.button>
+							</Link>
 						</div>
 					</motion.div>
 				</div>

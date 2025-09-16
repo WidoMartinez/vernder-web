@@ -1,5 +1,6 @@
 import { useRef } from "react";
 import { motion as Motion, useScroll, useTransform } from "framer-motion";
+import { Link } from "react-router-dom"; // Importar Link
 import { RainbowButton } from "./magicui/rainbow-button";
 import crmDashboard from "../assets/crm-dashboard.png";
 
@@ -38,7 +39,9 @@ function Hero() {
 					</p>
 
 					<div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-						<RainbowButton size="lg">Quiero mi Página Web</RainbowButton>
+						<Link to="/contacto">
+							<RainbowButton size="lg">Quiero mi Página Web</RainbowButton>
+						</Link>
 					</div>
 				</Motion.div>
 

@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { ExternalLink, Code, Palette, TrendingUp } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Portfolio = () => {
 	const projects = [
@@ -9,14 +10,14 @@ const Portfolio = () => {
 			category: "Tienda Online",
 			description:
 				"Diseño y desarrollo de una tienda online completa con sistema de pagos integrado y panel de administración.",
-			image: "/home/ubuntu/upload/search_images/8AdY6w4vjrmS.jpg",
+			image: "/images/portfolio-1.jpg", // Ruta corregida
 			technologies: ["React", "Node.js", "Stripe", "MongoDB"],
 			results: {
 				conversion: "+150%",
 				traffic: "+200%",
 				sales: "+300%",
 			},
-			link: "#",
+			link: "/contacto", // Enlace corregido
 		},
 		{
 			id: 2,
@@ -24,14 +25,14 @@ const Portfolio = () => {
 			category: "Generación de Leads",
 			description:
 				"Landing page optimizada para conversión de una startup de software con formularios inteligentes.",
-			image: "/home/ubuntu/upload/search_images/HYUON6SfAtlz.webp",
+			image: "/images/portfolio-2.webp", // Ruta corregida
 			technologies: ["React", "Tailwind CSS", "Framer Motion"],
 			results: {
 				conversion: "+85%",
 				leads: "+120%",
 				bounce: "-40%",
 			},
-			link: "#",
+			link: "/contacto", // Enlace corregido
 		},
 		{
 			id: 3,
@@ -39,14 +40,14 @@ const Portfolio = () => {
 			category: "Sitio Web Empresarial",
 			description:
 				"Rediseño completo del sitio web corporativo con enfoque en experiencia de usuario y SEO.",
-			image: "/home/ubuntu/upload/search_images/g33q2qtwhjew.jpg",
+			image: "/images/portfolio-3.jpg", // Ruta corregida
 			technologies: ["WordPress", "PHP", "MySQL", "SEO"],
 			results: {
 				seo: "+180%",
 				engagement: "+90%",
 				speed: "+60%",
 			},
-			link: "#",
+			link: "/contacto", // Enlace corregido
 		},
 		{
 			id: 4,
@@ -54,14 +55,14 @@ const Portfolio = () => {
 			category: "Aplicación Web",
 			description:
 				"Aplicación web con elementos interactivos avanzados y animaciones personalizadas.",
-			image: "/home/ubuntu/upload/search_images/cX55lv6MkASF.png",
+			image: "/images/portfolio-4.png", // Ruta corregida
 			technologies: ["Vue.js", "Three.js", "GSAP", "Firebase"],
 			results: {
 				engagement: "+250%",
 				retention: "+140%",
 				satisfaction: "95%",
 			},
-			link: "#",
+			link: "/contacto", // Enlace corregido
 		},
 		{
 			id: 5,
@@ -69,14 +70,14 @@ const Portfolio = () => {
 			category: "E-learning",
 			description:
 				"Plataforma educativa con sistema de pagos, progreso de estudiantes y certificaciones.",
-			image: "/home/ubuntu/upload/search_images/It4O7Mi78WxK.webp",
+			image: "/images/portfolio-5.webp", // Ruta corregida
 			technologies: ["React", "Express", "PostgreSQL", "AWS"],
 			results: {
 				students: "+500%",
 				completion: "+75%",
 				revenue: "+400%",
 			},
-			link: "#",
+			link: "/contacto", // Enlace corregido
 		},
 		{
 			id: 6,
@@ -84,14 +85,14 @@ const Portfolio = () => {
 			category: "Panel de Control",
 			description:
 				"Dashboard interactivo para visualización de datos con gráficos en tiempo real.",
-			image: "/home/ubuntu/upload/search_images/djZhIiGAUi4p.jpg",
+			image: "/images/portfolio-6.jpg", // Ruta corregida
 			technologies: ["React", "D3.js", "Chart.js", "WebSocket"],
 			results: {
 				efficiency: "+120%",
 				decisions: "+80%",
 				time: "-50%",
 			},
-			link: "#",
+			link: "/contacto", // Enlace corregido
 		},
 	];
 
@@ -153,64 +154,67 @@ const Portfolio = () => {
 				<div className="max-w-7xl mx-auto">
 					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 						{projects.map((project, index) => (
-							<motion.div
-								key={project.id}
-								className="bg-card rounded-2xl overflow-hidden hover:transform hover:scale-105 transition-all duration-300 group"
-								initial={{ opacity: 0, y: 20 }}
-								animate={{ opacity: 1, y: 0 }}
-								transition={{ duration: 0.6, delay: index * 0.1 }}
-							>
-								<div className="relative overflow-hidden">
-									<div className="h-64 bg-gradient-to-br from-primary to-accent flex items-center justify-center">
-										<Palette className="w-16 h-16 text-white opacity-50" />
-									</div>
-									<div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-										<ExternalLink className="w-8 h-8 text-white" />
-									</div>
-								</div>
-
-								<div className="p-6">
-									<div className="flex items-center justify-between mb-3">
-										<span className="text-sm text-primary font-medium">
-											{project.category}
-										</span>
-										<Code className="w-4 h-4 text-text-muted" />
-									</div>
-
-									<h3 className="text-xl font-bold mb-3">{project.title}</h3>
-									<p className="text-text-secondary mb-4 text-sm leading-relaxed">
-										{project.description}
-									</p>
-
-									<div className="flex flex-wrap gap-2 mb-4">
-										{project.technologies.map((tech) => (
-											<span
-												key={tech}
-												className="px-3 py-1 bg-secondary rounded-full text-xs text-text-secondary"
-											>
-												{tech}
-											</span>
-										))}
-									</div>
-
-									<div className="border-t border-secondary pt-4">
-										<h4 className="text-sm font-semibold mb-2 flex items-center">
-											<TrendingUp className="w-4 h-4 mr-2 text-success" />
-											Resultados
-										</h4>
-										<div className="grid grid-cols-3 gap-2 text-xs">
-											{Object.entries(project.results).map(([key, value]) => (
-												<div key={key} className="text-center">
-													<div className="text-success font-bold">{value}</div>
-													<div className="text-text-muted capitalize">
-														{key}
-													</div>
-												</div>
-											))}
+							<Link to={project.link} key={project.id}>
+								<motion.div
+									className="bg-card rounded-2xl overflow-hidden hover:transform hover:scale-105 transition-all duration-300 group h-full flex flex-col"
+									initial={{ opacity: 0, y: 20 }}
+									animate={{ opacity: 1, y: 0 }}
+									transition={{ duration: 0.6, delay: index * 0.1 }}
+								>
+									<div className="relative overflow-hidden">
+										<div className="h-64 bg-gradient-to-br from-primary to-accent flex items-center justify-center">
+											<Palette className="w-16 h-16 text-white opacity-50" />
+										</div>
+										<div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+											<ExternalLink className="w-8 h-8 text-white" />
 										</div>
 									</div>
-								</div>
-							</motion.div>
+
+									<div className="p-6 flex flex-col flex-grow">
+										<div className="flex items-center justify-between mb-3">
+											<span className="text-sm text-primary font-medium">
+												{project.category}
+											</span>
+											<Code className="w-4 h-4 text-text-muted" />
+										</div>
+
+										<h3 className="text-xl font-bold mb-3">{project.title}</h3>
+										<p className="text-text-secondary mb-4 text-sm leading-relaxed">
+											{project.description}
+										</p>
+
+										<div className="flex flex-wrap gap-2 mb-4">
+											{project.technologies.map((tech) => (
+												<span
+													key={tech}
+													className="px-3 py-1 bg-secondary rounded-full text-xs text-text-secondary"
+												>
+													{tech}
+												</span>
+											))}
+										</div>
+
+										<div className="border-t border-secondary pt-4 mt-auto">
+											<h4 className="text-sm font-semibold mb-2 flex items-center">
+												<TrendingUp className="w-4 h-4 mr-2 text-success" />
+												Resultados
+											</h4>
+											<div className="grid grid-cols-3 gap-2 text-xs">
+												{Object.entries(project.results).map(([key, value]) => (
+													<div key={key} className="text-center">
+														<div className="text-success font-bold">
+															{value}
+														</div>
+														<div className="text-text-muted capitalize">
+															{key}
+														</div>
+													</div>
+												))}
+											</div>
+										</div>
+									</div>
+								</motion.div>
+							</Link>
 						))}
 					</div>
 				</div>
@@ -231,13 +235,15 @@ const Portfolio = () => {
 						<p className="text-xl mb-8 opacity-90 text-amber-100">
 							Transformemos tu idea en una experiencia digital exitosa
 						</p>
-						<motion.button
-							className="bg-white text-primary px-8 py-4 rounded-full font-semibold text-lg hover:bg-gray-100 transition-colors duration-300"
-							whileHover={{ scale: 1.05 }}
-							whileTap={{ scale: 0.95 }}
-						>
-							Iniciar Proyecto
-						</motion.button>
+						<Link to="/contacto">
+							<motion.button
+								className="bg-white text-primary px-8 py-4 rounded-full font-semibold text-lg hover:bg-gray-100 transition-colors duration-300"
+								whileHover={{ scale: 1.05 }}
+								whileTap={{ scale: 0.95 }}
+							>
+								Iniciar Proyecto
+							</motion.button>
+						</Link>
 					</motion.div>
 				</div>
 			</section>

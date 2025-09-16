@@ -1,20 +1,14 @@
 import { motion } from "framer-motion";
-import {
-	ArrowRight,
-	CheckCircle,
-	Star,
-	Users,
-	Zap,
-	TrendingUp,
-} from "lucide-react";
+import { ArrowRight, Star, Users, Zap, TrendingUp } from "lucide-react";
 import {
 	AnimatedCounter,
 	RevealOnScroll,
 } from "@/components/InteractiveElements";
-import Hero from "@/components/Hero"; // Asumiendo que el Hero se mantiene como un componente separado
+import Hero from "@/components/Hero";
 import Features from "@/components/Features";
 import HowItWorks from "@/components/HowItWorks";
 import Pricing from "@/components/Pricing";
+import { Link } from "react-router-dom";
 
 function Results() {
 	const stats = [
@@ -186,22 +180,24 @@ function FinalCTA() {
 						</p>
 
 						<div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-							<motion.button
-								className="bg-gradient-to-r from-primary to-accent hover:from-primary-hover hover:to-primary text-white px-10 py-5 rounded-full font-bold text-xl flex items-center gap-3 shadow-2xl group"
-								whileHover={{
-									scale: 1.05,
-									boxShadow: "0 20px 40px rgba(217, 119, 6, 0.4)",
-								}}
-								whileTap={{ scale: 0.95 }}
-							>
-								Cotizar mi Web Ahora
-								<motion.div
-									animate={{ x: [0, 5, 0] }}
-									transition={{ duration: 1.5, repeat: Infinity }}
+							<Link to="/contacto">
+								<motion.button
+									className="bg-gradient-to-r from-primary to-accent hover:from-primary-hover hover:to-primary text-white px-10 py-5 rounded-full font-bold text-xl flex items-center gap-3 shadow-2xl group"
+									whileHover={{
+										scale: 1.05,
+										boxShadow: "0 20px 40px rgba(217, 119, 6, 0.4)",
+									}}
+									whileTap={{ scale: 0.95 }}
 								>
-									<ArrowRight className="w-6 h-6" />
-								</motion.div>
-							</motion.button>
+									Cotizar mi Web Ahora
+									<motion.div
+										animate={{ x: [0, 5, 0] }}
+										transition={{ duration: 1.5, repeat: Infinity }}
+									>
+										<ArrowRight className="w-6 h-6" />
+									</motion.div>
+								</motion.button>
+							</Link>
 						</div>
 
 						<motion.div

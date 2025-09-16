@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
 function Pricing() {
 	const plans = [
@@ -131,13 +132,15 @@ function Pricing() {
 									</span>
 								</div>
 
-								<motion.button
-									whileHover={{ scale: 1.05 }}
-									whileTap={{ scale: 0.95 }}
-									className="w-full py-3 px-6 rounded-full font-semibold transition-all duration-300 text-md mb-8 bg-gradient-to-r from-gray-200 to-white hover:from-gray-100 hover:to-gray-50 shadow-lg text-black"
-								>
-									{plan.cta}
-								</motion.button>
+								<Link to="/contacto">
+									<motion.button
+										whileHover={{ scale: 1.05 }}
+										whileTap={{ scale: 0.95 }}
+										className="w-full py-3 px-6 rounded-full font-semibold transition-all duration-300 text-md mb-8 bg-gradient-to-r from-gray-200 to-white hover:from-gray-100 hover:to-gray-50 shadow-lg text-black"
+									>
+										{plan.cta}
+									</motion.button>
+								</Link>
 							</div>
 
 							<div className="flex-grow">
@@ -167,12 +170,12 @@ function Pricing() {
 					<p className="text-text-secondary">
 						¿Buscas un diseño con animaciones de vanguardia y pago mensual?{" "}
 						<br /> El <b>Plan Premium Framer</b> es para ti.{" "}
-						<a
-							href="/contacto"
+						<Link
+							to="/contacto"
 							className="text-primary hover:underline font-semibold"
 						>
 							¡Contáctanos!
-						</a>
+						</Link>
 					</p>
 				</div>
 			</div>

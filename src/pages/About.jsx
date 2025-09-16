@@ -7,6 +7,7 @@ import {
 	CheckCircle,
 	ArrowRight,
 } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const About = () => {
 	const values = [
@@ -127,14 +128,16 @@ const About = () => {
 								sitios web que no solo impresionan visualmente, sino que también
 								convierten visitantes en clientes leales.
 							</p>
-							<motion.button
-								className="bg-gradient-to-r from-primary to-accent hover:from-primary-hover hover:to-primary text-white px-8 py-4 rounded-full font-semibold flex items-center gap-2"
-								whileHover={{ scale: 1.05 }}
-								whileTap={{ scale: 0.95 }}
-							>
-								Conoce nuestro trabajo
-								<ArrowRight className="w-5 h-5" />
-							</motion.button>
+							<Link to="/portafolio">
+								<motion.button
+									className="bg-gradient-to-r from-primary to-accent hover:from-primary-hover hover:to-primary text-white px-8 py-4 rounded-full font-semibold flex items-center gap-2"
+									whileHover={{ scale: 1.05 }}
+									whileTap={{ scale: 0.95 }}
+								>
+									Conoce nuestro trabajo
+									<ArrowRight className="w-5 h-5" />
+								</motion.button>
+							</Link>
 						</motion.div>
 
 						<motion.div
@@ -368,13 +371,15 @@ const About = () => {
 							Conversemos sobre tu proyecto y descubre cómo podemos ayudarte a
 							alcanzar tus objetivos
 						</p>
-						<motion.button
-							className="bg-white text-primary px-8 py-4 rounded-full font-semibold text-lg hover:bg-gray-100 transition-colors duration-300"
-							whileHover={{ scale: 1.05 }}
-							whileTap={{ scale: 0.95 }}
-						>
-							Iniciar Conversación
-						</motion.button>
+						<Link to="/contacto">
+							<motion.button
+								className="bg-white text-primary px-8 py-4 rounded-full font-semibold text-lg hover:bg-gray-100 transition-colors duration-300"
+								whileHover={{ scale: 1.05 }}
+								whileTap={{ scale: 0.95 }}
+							>
+								Iniciar Conversación
+							</motion.button>
+						</Link>
 					</motion.div>
 				</div>
 			</section>
