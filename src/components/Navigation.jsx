@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X } from "lucide-react"; // Se eliminó la importación de 'Palette'
+import { Menu, X } from "lucide-react";
 import { motion } from "framer-motion";
-import logo from "@/assets/logo.png"; // 1. Importa tu nuevo logo
+import logo from "@/assets/logo.png";
 
 function Navigation() {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -22,14 +22,16 @@ function Navigation() {
 
 	const isActive = (path) => location.pathname === path;
 
+	// Número de WhatsApp al que se dirigirá el botón
+	const whatsappNumber = "56964355581";
+	const whatsappLink = `https://wa.me/${whatsappNumber}`;
+
 	return (
 		<header className="bg-card/95 backdrop-blur-sm sticky top-0 z-50 border-b border-secondary">
 			<nav className="container mx-auto px-6 py-4 flex justify-between items-center">
 				{/* Logo */}
-				{/* 2. Reemplaza el ícono y texto por tu imagen */}
 				<Link to="/" className="flex items-center">
-					<img src={logo} alt="Dealvia Logo" className="h-10" />{" "}
-					{/* Ajusta la altura (h-8) según necesites */}
+					<img src={logo} alt="Dealvia Logo" className="h-10" />
 				</Link>
 
 				{/* Desktop Navigation */}
@@ -59,12 +61,14 @@ function Navigation() {
 
 				{/* CTA Button */}
 				<div className="hidden md:block">
-					<Link
-						to="/contacto"
+					<a
+						href={whatsappLink}
+						target="_blank"
+						rel="noopener noreferrer"
 						className="bg-gradient-to-r from-primary to-accent hover:from-primary-hover hover:to-primary text-white px-6 py-2 rounded-full font-semibold transition-all duration-300 transform hover:scale-105"
 					>
 						Consulta Gratuita
-					</Link>
+					</a>
 				</div>
 
 				{/* Mobile Menu Button */}
@@ -104,13 +108,15 @@ function Navigation() {
 								{item.name}
 							</Link>
 						))}
-						<Link
-							to="/contacto"
+						<a
+							href={whatsappLink}
+							target="_blank"
+							rel="noopener noreferrer"
 							onClick={() => setIsMenuOpen(false)}
 							className="block w-full text-center bg-gradient-to-r from-primary to-accent hover:from-primary-hover hover:to-primary text-white px-6 py-3 rounded-full font-semibold transition-all duration-300 mt-4"
 						>
 							Consulta Gratuita
-						</Link>
+						</a>
 					</div>
 				</motion.div>
 			)}

@@ -5,7 +5,6 @@ import ScrollToAnchor from "@/components/ScrollToAnchor";
 import {
 	ScrollToTop,
 	ParallaxBackground,
-	FloatingContactButton,
 	ScrollProgress,
 } from "@/components/InteractiveElements";
 import Home from "@/pages/Home";
@@ -33,7 +32,7 @@ function App() {
 				</main>
 				<Footer />
 				<ScrollToTop />
-				<FloatingContactButton />
+				{/* La línea <FloatingContactButton /> ha sido eliminada */}
 			</div>
 		</Router>
 	);
