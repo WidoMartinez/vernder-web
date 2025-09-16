@@ -1,6 +1,8 @@
 import { motion } from "framer-motion";
-import { Send, CheckCircle, XCircle, Loader } from "lucide-react"; // Añadimos Loader
+import { Send, CheckCircle, XCircle, Loader } from "lucide-react";
 import { useState } from "react";
+import ReactDOMServer from "react-dom/server";
+import EmailTemplate from "./EmailTemplate";
 
 const Contact = () => {
 	const [formData, setFormData] = useState({
@@ -11,7 +13,6 @@ const Contact = () => {
 		message: "",
 	});
 
-	// 'idle', 'loading', 'success', 'error'
 	const [submissionStatus, setSubmissionStatus] = useState("idle");
 
 	const handleChange = (e) => {
@@ -26,29 +27,47 @@ const Contact = () => {
 		setSubmissionStatus("loading");
 
 		try {
-			// Apuntamos a nuestro propio script PHP
-			const response = await fetch("/api/send_email.php", {
+			const notificationResponse = await fetch("/api/send_email.php", {
 				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
+				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify(formData),
 			});
 
-			const result = await response.json();
+			const notificationResult = await notificationResponse.json();
 
-			if (response.ok && result.status === "success") {
-				setSubmissionStatus("success");
-				setFormData({
-					name: "",
-					email: "",
-					phone: "",
-					service: "",
-					message: "",
-				});
-			} else {
-				throw new Error(result.message || "Error en el servidor.");
+			if (!notificationResponse.ok || notificationResult.status !== "success") {
+				throw new Error(
+					notificationResult.message ||
+						"Error en el servidor de notificaciones."
+				);
 			}
+
+			// Se genera el HTML sin pasarle URLs de imágenes
+			const emailHtml = ReactDOMServer.renderToString(
+				<EmailTemplate data={formData} />
+			);
+
+			const clientEmailResponse = await fetch("/api/send_client_email.php", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({
+					to: formData.email,
+					subject: `Confirmación de tu cotización en Nubestilo`,
+					html: emailHtml,
+				}),
+			});
+
+			const clientEmailResult = await clientEmailResponse.json();
+
+			if (!clientEmailResponse.ok || clientEmailResult.status !== "success") {
+				console.warn(
+					"No se pudo enviar el correo de confirmación al cliente:",
+					clientEmailResult.message
+				);
+			}
+
+			setSubmissionStatus("success");
+			setFormData({ name: "", email: "", phone: "", service: "", message: "" });
 		} catch (error) {
 			console.error("Error al enviar el formulario:", error);
 			setSubmissionStatus("error");
@@ -79,7 +98,7 @@ const Contact = () => {
 					</h3>
 					<p className="text-text-secondary">
 						Gracias por contactarnos. Te responderemos en las próximas 24 horas
-						hábiles.
+						hábiles y hemos enviado una confirmación a tu correo.
 					</p>
 				</motion.div>
 			);
@@ -115,7 +134,6 @@ const Contact = () => {
 				<h2 className="text-3xl font-bold mb-8 text-center">
 					Cuéntanos tu idea
 				</h2>
-				{/* Campos del formulario (sin cambios) */}
 				<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 					<div>
 						<label
