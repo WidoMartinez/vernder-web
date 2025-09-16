@@ -67,6 +67,16 @@ const Contact = () => {
 			}
 
 			setSubmissionStatus("success");
+
+			// --- SEGUIMIENTO DE CONVERSIÓN DE GOOGLE ADS ---
+			// Este código se ejecuta solo después de un envío exitoso.
+			if (typeof gtag === "function") {
+				gtag("event", "conversion", {
+					send_to: "AW-17566977229/Aw2wCMmX0psbEM2Zy7hB",
+				});
+			}
+			// ---------------------------------------------------
+
 			setFormData({ name: "", email: "", phone: "", service: "", message: "" });
 		} catch (error) {
 			console.error("Error al enviar el formulario:", error);
