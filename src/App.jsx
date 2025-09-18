@@ -7,7 +7,7 @@ import {
 	ScrollToTop,
 	ParallaxBackground,
 	ScrollProgress,
-	LoadingSpinner, // Importamos el Spinner
+	LoadingSpinner,
 } from "@/components/InteractiveElements";
 
 // --- Implementación de Code Splitting con React.lazy ---
@@ -16,6 +16,8 @@ const Services = lazy(() => import("@/pages/Services"));
 const Portfolio = lazy(() => import("@/pages/Portfolio"));
 const About = lazy(() => import("@/pages/About"));
 const Contact = lazy(() => import("@/pages/Contact"));
+// --- ¡NUEVA PÁGINA! ---
+const PostPaymentForm = lazy(() => import("@/pages/PostPaymentForm"));
 // ---------------------------------------------------------
 
 function App() {
@@ -27,7 +29,6 @@ function App() {
 			<div className="min-h-screen bg-background text-text relative">
 				<Navigation />
 				<main>
-					{/* Usamos Suspense para mostrar un loader mientras se carga el código de la página */}
 					<Suspense
 						fallback={
 							<div className="flex justify-center items-center h-screen">
@@ -41,6 +42,8 @@ function App() {
 							<Route path="/portafolio" element={<Portfolio />} />
 							<Route path="/nosotros" element={<About />} />
 							<Route path="/contacto" element={<Contact />} />
+							{/* --- ¡NUEVA RUTA! --- */}
+							<Route path="/post-pago" element={<PostPaymentForm />} />
 						</Routes>
 					</Suspense>
 				</main>

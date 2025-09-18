@@ -2,66 +2,35 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { Loader } from "lucide-react";
+import PaymentModal from "./PaymentModal"; // Importamos nuestro nuevo modal
 
-const PaymentButton = ({ gateway, onPayment, isLoading, plan }) => {
-	const logos = {
-		mercadopago: "https://img.icons8.com/color/48/mercado-pago.png",
-		flow: "https://www.flow.cl/images/logos/logo-flow-color.svg",
-	};
-	const text = {
-		mercadopago: "Mercado Pago",
-		flow: "Flow",
-	};
-
-	return (
-		<motion.button
-			onClick={() => onPayment(gateway, plan)}
-			disabled={isLoading}
-			whileHover={{ scale: 1.05 }}
-			whileTap={{ scale: 0.95 }}
-			className="w-full flex items-center justify-center gap-3 py-3 px-4 rounded-full font-semibold transition-all duration-300 text-sm bg-white/90 hover:bg-white shadow-md text-black disabled:opacity-50"
-		>
-			{isLoading ? (
-				<Loader className="animate-spin w-5 h-5" />
-			) : (
-				<img src={logos[gateway]} alt={text[gateway]} className="h-6" />
-			)}
-			<span>Pagar con {text[gateway]}</span>
-		</motion.button>
-	);
-};
+// El componente PaymentButton ya no es necesario aquí, lo movimos a PaymentModal.jsx
 
 function Pricing() {
-	const [isLoading, setIsLoading] = useState(false);
+	// Estados para manejar el modal y el plan seleccionado
+	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [selectedPlan, setSelectedPlan] = useState(null);
 	const [error, setError] = useState(null);
 
-	const handlePayment = async (gateway, plan) => {
-		setIsLoading(true);
+	// Función para abrir el modal con el plan correcto
+	const handlePlanSelection = (plan) => {
+		setSelectedPlan(plan);
+		setIsModalOpen(true);
+	};
+
+	// La lógica de pago ahora recibe el email desde el modal
+	const initiatePayment = async (gateway, plan, email) => {
 		setError(null);
-
-		const userEmail = prompt(
-			"Por favor, ingresa tu correo electrónico para procesar el pago:",
-			"cliente@example.com"
-		);
-
-		if (!userEmail) {
-			setIsLoading(false);
-			return;
-		}
-
 		try {
-			// --- ¡AQUÍ ESTÁ LA MAGIA! ---
-			// Apuntamos a tu backend seguro en Render.com
 			const backendUrl = "https://nubestilo-backend.onrender.com";
-
 			const response = await fetch(`${backendUrl}/create-payment`, {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({
 					gateway,
-					amount: plan.discountPrice,
+					amount: plan.discountPrice || plan.price,
 					description: plan.name,
-					email: userEmail,
+					email: email,
 				}),
 			});
 
@@ -73,11 +42,11 @@ function Pricing() {
 			const data = await response.json();
 			window.location.href = data.url; // Redirigir al usuario a la pasarela
 		} catch (err) {
-			setError(
+			console.error("Detalle del error de pago:", err);
+			// Este error se pasará al modal para ser mostrado al usuario
+			throw new Error(
 				"No se pudo iniciar el proceso de pago. Por favor, intenta de nuevo."
 			);
-			console.error("Detalle del error de pago:", err);
-			setIsLoading(false);
 		}
 	};
 
@@ -147,146 +116,149 @@ function Pricing() {
 	];
 
 	return (
-		<section id="pricing" className="py-20 px-6 bg-[var(--bg-dark)]">
-			<div className="container mx-auto">
-				<motion.div
-					initial={{ opacity: 0, y: 30 }}
-					whileInView={{ opacity: 1, y: 0 }}
-					transition={{ duration: 0.8 }}
-					viewport={{ once: true }}
-					className="text-center mb-16"
-				>
-					<h3 className="text-sm font-semibold text-[var(--primary-color)] tracking-wider uppercase mb-4">
-						PLANES
-					</h3>
-					<h2 className="text-4xl md:text-5xl font-bold text-[var(--text-primary)] mb-4">
-						Elige el Plan Perfecto para tu Negocio
-					</h2>
-					<p className="text-xl text-[var(--text-secondary)] mb-8">
-						Precios transparentes y soluciones a la medida de tus necesidades.
-					</p>
-					{error && <p className="text-red-500 mt-4">{error}</p>}
-				</motion.div>
+		<>
+			<section id="pricing" className="py-20 px-6 bg-[var(--bg-dark)]">
+				<div className="container mx-auto">
+					<motion.div
+						initial={{ opacity: 0, y: 30 }}
+						whileInView={{ opacity: 1, y: 0 }}
+						transition={{ duration: 0.8 }}
+						viewport={{ once: true }}
+						className="text-center mb-16"
+					>
+						<h3 className="text-sm font-semibold text-[var(--primary-color)] tracking-wider uppercase mb-4">
+							PLANES
+						</h3>
+						<h2 className="text-4xl md:text-5xl font-bold text-[var(--text-primary)] mb-4">
+							Elige el Plan Perfecto para tu Negocio
+						</h2>
+						<p className="text-xl text-[var(--text-secondary)] mb-8">
+							Precios transparentes y soluciones a la medida de tus necesidades.
+						</p>
+						{error && (
+							<p className="text-red-500 mt-4">Error general: {error}</p>
+						)}
+					</motion.div>
 
-				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
-					{plans.map((plan, index) => (
-						<motion.div
-							key={index}
-							initial={{ opacity: 0, y: 30 }}
-							whileInView={{ opacity: 1, y: 0 }}
-							transition={{ duration: 0.6, delay: index * 0.1 }}
-							viewport={{ once: true }}
-							whileHover={{ y: -5 }}
-							className={`relative rounded-2xl p-8 transition-all duration-300 flex flex-col h-full ${
-								plan.highlighted
-									? "bg-gradient-to-b from-[var(--primary-hover)]/10 to-[var(--primary-hover)]/5 border-2 border-[var(--primary-color)]"
-									: "bg-[var(--bg-card)]/80 border border-[var(--border-gray-700)]"
-							}`}
-						>
-							{plan.hasOffer && (
-								<div className="absolute top-0 -right-4 bg-red-600 text-white text-xs font-bold px-4 py-1 rounded-full transform rotate-12 shadow-lg">
-									¡OFERTA ONLINE!
-								</div>
-							)}
-							<div className="text-center flex-grow">
-								<h3 className="text-2xl font-bold text-[var(--text-primary)] mb-2">
-									{plan.name}
-								</h3>
-								<p className="text-[var(--text-secondary)] mb-6 min-h-[3rem] flex items-center justify-center text-sm">
-									{plan.description}
-								</p>
+					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
+						{plans.map((plan, index) => (
+							<motion.div
+								key={index}
+								initial={{ opacity: 0, y: 30 }}
+								whileInView={{ opacity: 1, y: 0 }}
+								transition={{ duration: 0.6, delay: index * 0.1 }}
+								viewport={{ once: true }}
+								whileHover={{ y: -5 }}
+								className={`relative rounded-2xl p-8 transition-all duration-300 flex flex-col h-full ${
+									plan.highlighted
+										? "bg-gradient-to-b from-[var(--primary-hover)]/10 to-[var(--primary-hover)]/5 border-2 border-[var(--primary-color)]"
+										: "bg-[var(--bg-card)]/80 border border-[var(--border-gray-700)]"
+								}`}
+							>
+								{plan.hasOffer && (
+									<div className="absolute top-0 -right-4 bg-red-600 text-white text-xs font-bold px-4 py-1 rounded-full transform rotate-12 shadow-lg">
+										¡OFERTA ONLINE!
+									</div>
+								)}
+								<div className="text-center flex-grow">
+									<h3 className="text-2xl font-bold text-[var(--text-primary)] mb-2">
+										{plan.name}
+									</h3>
+									<p className="text-[var(--text-secondary)] mb-6 min-h-[3rem] flex items-center justify-center text-sm">
+										{plan.description}
+									</p>
 
-								<div className="mb-8 min-h-[5rem] flex flex-col justify-center">
-									{plan.hasOffer ? (
-										<>
-											<span className="text-2xl font-semibold text-gray-500 line-through">
+									<div className="mb-8 min-h-[5rem] flex flex-col justify-center">
+										{plan.hasOffer ? (
+											<>
+												<span className="text-2xl font-semibold text-gray-500 line-through">
+													${new Intl.NumberFormat("es-CL").format(plan.price)}
+												</span>
+												<span className="text-4xl font-bold text-green-400">
+													$
+													{new Intl.NumberFormat("es-CL").format(
+														plan.discountPrice
+													)}
+												</span>
+											</>
+										) : (
+											<span className="text-4xl font-bold text-[var(--text-primary)]">
 												${new Intl.NumberFormat("es-CL").format(plan.price)}
 											</span>
-											<span className="text-4xl font-bold text-green-400">
-												$
-												{new Intl.NumberFormat("es-CL").format(
-													plan.discountPrice
-												)}
-											</span>
-										</>
-									) : (
-										<span className="text-4xl font-bold text-[var(--text-primary)]">
-											${new Intl.NumberFormat("es-CL").format(plan.price)}
+										)}
+										<span className="text-[var(--text-secondary)] text-sm">
+											{plan.period}
 										</span>
-									)}
-									<span className="text-[var(--text-secondary)] text-sm">
-										{plan.period}
-									</span>
-								</div>
-
-								{plan.hasOffer ? (
-									<div className="space-y-3 mb-8">
-										<p className="text-xs text-green-300 font-semibold">
-											Paga Online y Ahorra un 30%
-										</p>
-										<PaymentButton
-											gateway="mercadopago"
-											onPayment={handlePayment}
-											isLoading={isLoading}
-											plan={plan}
-										/>
-										<PaymentButton
-											gateway="flow"
-											onPayment={handlePayment}
-											isLoading={isLoading}
-											plan={plan}
-										/>
 									</div>
-								) : (
-									<Link to="/contacto">
+
+									{plan.hasOffer ? (
 										<motion.button
+											onClick={() => handlePlanSelection(plan)}
 											whileHover={{ scale: 1.05 }}
 											whileTap={{ scale: 0.95 }}
-											className="w-full py-3 px-6 rounded-full font-semibold transition-all duration-300 text-md mb-8 bg-gradient-to-r from-gray-200 to-white hover:from-gray-100 hover:to-gray-50 shadow-lg text-black"
+											className="w-full py-3 px-6 rounded-full font-semibold transition-all duration-300 text-md mb-8 bg-gradient-to-r from-green-500 to-green-400 hover:from-green-600 hover:to-green-500 shadow-lg text-white"
 										>
-											{plan.cta}
+											Pagar Online y Ahorrar
 										</motion.button>
-									</Link>
-								)}
-							</div>
+									) : (
+										<Link to="/contacto">
+											<motion.button
+												whileHover={{ scale: 1.05 }}
+												whileTap={{ scale: 0.95 }}
+												className="w-full py-3 px-6 rounded-full font-semibold transition-all duration-300 text-md mb-8 bg-gradient-to-r from-gray-200 to-white hover:from-gray-100 hover:to-gray-50 shadow-lg text-black"
+											>
+												{plan.cta}
+											</motion.button>
+										</Link>
+									)}
+								</div>
 
-							<div className="flex-grow">
-								<h4 className="text-[var(--text-primary)] font-semibold mb-6 text-md">
-									Incluye:
-								</h4>
-								<ul className="space-y-3">
-									{plan.features.map((feature, featureIndex) => (
-										<li
-											key={featureIndex}
-											className="flex items-start space-x-3"
-										>
-											<div className="w-4 h-4 rounded-full border-2 border-[var(--text-primary)] flex items-center justify-center mt-1 flex-shrink-0">
-												<div className="w-1.5 h-1.5 bg-[var(--text-primary)] rounded-full"></div>
-											</div>
-											<span className="text-[var(--text-primary)] leading-relaxed text-sm">
-												{feature}
-											</span>
-										</li>
-									))}
-								</ul>
-							</div>
-						</motion.div>
-					))}
+								<div className="flex-grow">
+									<h4 className="text-[var(--text-primary)] font-semibold mb-6 text-md">
+										Incluye:
+									</h4>
+									<ul className="space-y-3">
+										{plan.features.map((feature, featureIndex) => (
+											<li
+												key={featureIndex}
+												className="flex items-start space-x-3"
+											>
+												<div className="w-4 h-4 rounded-full border-2 border-[var(--text-primary)] flex items-center justify-center mt-1 flex-shrink-0">
+													<div className="w-1.5 h-1.5 bg-[var(--text-primary)] rounded-full"></div>
+												</div>
+												<span className="text-[var(--text-primary)] leading-relaxed text-sm">
+													{feature}
+												</span>
+											</li>
+										))}
+									</ul>
+								</div>
+							</motion.div>
+						))}
+					</div>
+					<div className="flex justify-center mt-12 text-center">
+						<p className="text-text-secondary">
+							¿Buscas un diseño con animaciones de vanguardia y pago mensual?{" "}
+							<br /> El <b>Plan Premium Framer</b> es para ti.{" "}
+							<Link
+								to="/contacto"
+								className="text-primary hover:underline font-semibold"
+							>
+								¡Contáctanos!
+							</Link>
+						</p>
+					</div>
 				</div>
-				<div className="flex justify-center mt-12 text-center">
-					<p className="text-text-secondary">
-						¿Buscas un diseño con animaciones de vanguardia y pago mensual?{" "}
-						<br /> El <b>Plan Premium Framer</b> es para ti.{" "}
-						<Link
-							to="/contacto"
-							className="text-primary hover:underline font-semibold"
-						>
-							¡Contáctanos!
-						</Link>
-					</p>
-				</div>
-			</div>
-		</section>
+			</section>
+
+			{/* Renderizar el modal */}
+			<PaymentModal
+				isOpen={isModalOpen}
+				onClose={() => setIsModalOpen(false)}
+				plan={selectedPlan}
+				onInitiatePayment={initiatePayment}
+			/>
+		</>
 	);
 }
 

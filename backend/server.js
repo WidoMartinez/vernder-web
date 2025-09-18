@@ -42,25 +42,49 @@ const signParams = (params) => {
 
 app.post("/create-payment", async (req, res) => {
 	const { gateway, amount, description, email } = req.body;
+	const frontendUrl = process.env.YOUR_FRONTEND_URL;
+	const backendUrl = process.env.YOUR_BACKEND_URL;
 
-	if (gateway === "mercadopago") {
-		// Lógica de Mercado Pago... (sin cambios)
-	} else if (gateway === "flow") {
-		const flowApiUrl =
-			process.env.FLOW_API_URL || "https://sandbox.flow.cl/api";
-		const params = {
-			apiKey: process.env.FLOW_API_KEY,
-			commerceOrder: `ORDEN-${Date.now()}`,
-			subject: description,
-			currency: "CLP",
-			amount: amount,
-			email: email,
-			// Esta URL ahora funcionará correctamente con la variable de entorno
-			urlConfirmation: `${process.env.YOUR_BACKEND_URL}/flow-confirmation`,
-			urlReturn: `${process.env.YOUR_FRONTEND_URL}/flow-return`,
-		};
-		params.s = signParams(params);
-		try {
+	try {
+		if (gateway === "mercadopago") {
+			const preference = new Preference(client);
+			const result = await preference.create({
+				body: {
+					items: [
+						{
+							title: description,
+							quantity: 1,
+							unit_price: Number(amount),
+							currency_id: "CLP",
+						},
+					],
+					payer: { email },
+					// --- URL DE RETORNO ACTUALIZADA ---
+					back_urls: {
+						success: `${frontendUrl}/post-pago`,
+						failure: `${frontendUrl}/pago-fallido`,
+						pending: `${frontendUrl}/pago-pendiente`,
+					},
+					auto_return: "approved",
+				},
+			});
+			res.json({ url: result.init_point });
+		} else if (gateway === "flow") {
+			const flowApiUrl =
+				process.env.FLOW_API_URL || "https://sandbox.flow.cl/api";
+			const params = {
+				apiKey: process.env.FLOW_API_KEY,
+				commerceOrder: `ORDEN-${Date.now()}`,
+				subject: description,
+				currency: "CLP",
+				amount: amount,
+				email: email,
+				// --- URL DE RETORNO ACTUALIZADA ---
+				urlConfirmation: `${backendUrl}/flow-confirmation`,
+				urlReturn: `${frontendUrl}/post-pago`,
+			};
+			params.s = signParams(params);
+
 			const response = await axios.post(
 				`${flowApiUrl}/payment/create`,
 				new URLSearchParams(params).toString(),
@@ -69,26 +93,22 @@ app.post("/create-payment", async (req, res) => {
 			const payment = response.data;
 			const redirectUrl = `${payment.url}?token=${payment.token}`;
 			res.json({ url: redirectUrl });
-		} catch (error) {
-			console.error(
-				"Error al crear el pago con Flow:",
-				error.response ? error.response.data : error.message
-			);
-			res.status(500).json({ message: "Error al generar el pago con Flow." });
+		} else {
+			res.status(400).json({ message: "Pasarela de pago no válida." });
 		}
-	} else {
-		res.status(400).json({ message: "Pasarela de pago no válida." });
+	} catch (error) {
+		console.error(
+			`Error al crear el pago con ${gateway}:`,
+			error.response ? error.response.data : error.message
+		);
+		res
+			.status(500)
+			.json({ message: `Error al generar el pago con ${gateway}.` });
 	}
 });
 
-// --- ¡NUEVO ENDPOINT! ---
-// Flow enviará un POST a esta URL después de que el pago se complete.
-// Por ahora, solo registraremos que llegó la confirmación en los logs de Render.
 app.post("/flow-confirmation", (req, res) => {
-	console.log("✅ Confirmación de Flow recibida:");
-	console.log(req.body);
-	// En el futuro, aquí puedes añadir lógica para actualizar tu base de datos,
-	// enviar un email de confirmación final, etc.
+	console.log("✅ Confirmación de Flow recibida:", req.body);
 	res.status(200).send("Confirmación recibida por el servidor.");
 });
 
