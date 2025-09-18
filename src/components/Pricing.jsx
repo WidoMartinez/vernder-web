@@ -1,13 +1,93 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Loader } from "lucide-react";
+
+const PaymentButton = ({ gateway, onPayment, isLoading, plan }) => {
+	const logos = {
+		mercadopago: "https://img.icons8.com/color/48/mercado-pago.png",
+		flow: "https://www.flow.cl/images/logos/logo-flow-color.svg",
+	};
+	const text = {
+		mercadopago: "Mercado Pago",
+		flow: "Flow",
+	};
+
+	return (
+		<motion.button
+			onClick={() => onPayment(gateway, plan)}
+			disabled={isLoading}
+			whileHover={{ scale: 1.05 }}
+			whileTap={{ scale: 0.95 }}
+			className="w-full flex items-center justify-center gap-3 py-3 px-4 rounded-full font-semibold transition-all duration-300 text-sm bg-white/90 hover:bg-white shadow-md text-black disabled:opacity-50"
+		>
+			{isLoading ? (
+				<Loader className="animate-spin w-5 h-5" />
+			) : (
+				<img src={logos[gateway]} alt={text[gateway]} className="h-6" />
+			)}
+			<span>Pagar con {text[gateway]}</span>
+		</motion.button>
+	);
+};
 
 function Pricing() {
+	const [isLoading, setIsLoading] = useState(false);
+	const [error, setError] = useState(null);
+
+	const handlePayment = async (gateway, plan) => {
+		setIsLoading(true);
+		setError(null);
+
+		const userEmail = prompt(
+			"Por favor, ingresa tu correo electrónico para procesar el pago:",
+			"cliente@example.com"
+		);
+
+		if (!userEmail) {
+			setIsLoading(false);
+			return;
+		}
+
+		try {
+			// --- ¡AQUÍ ESTÁ LA MAGIA! ---
+			// Apuntamos a tu backend seguro en Render.com
+			const backendUrl = "https://nubestilo-backend.onrender.com";
+
+			const response = await fetch(`${backendUrl}/create-payment`, {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({
+					gateway,
+					amount: plan.discountPrice,
+					description: plan.name,
+					email: userEmail,
+				}),
+			});
+
+			if (!response.ok) {
+				const errorData = await response.json();
+				throw new Error(errorData.message || "Error en el servidor de pagos.");
+			}
+
+			const data = await response.json();
+			window.location.href = data.url; // Redirigir al usuario a la pasarela
+		} catch (err) {
+			setError(
+				"No se pudo iniciar el proceso de pago. Por favor, intenta de nuevo."
+			);
+			console.error("Detalle del error de pago:", err);
+			setIsLoading(false);
+		}
+	};
+
 	const plans = [
 		{
 			name: "Plan Básico",
 			description:
 				"Perfecto para empezar y captar tus primeros clientes online.",
-			price: "$30.000",
+			price: 30000,
+			discountPrice: 21000, // 30% de descuento
 			period: "Pago Único",
 			features: [
 				"Página web de una sección (One-Page)",
@@ -17,12 +97,13 @@ function Pricing() {
 			],
 			cta: "Comenzar ahora",
 			highlighted: false,
+			hasOffer: true,
 		},
 		{
 			name: "Plan Emprendedor",
 			description:
 				"Ideal para quienes necesitan un sitio autoadministrable y completo.",
-			price: "$50.000",
+			price: 50000,
 			period: "Pago Único",
 			features: [
 				"Sitio web con WordPress",
@@ -37,7 +118,7 @@ function Pricing() {
 			name: "Plan E-commerce",
 			description:
 				"La solución completa para empezar a vender tus productos en línea.",
-			price: "$100.000",
+			price: 100000,
 			period: "Pago Único",
 			features: [
 				"Tienda online (Shopify, Jumpseller, etc.)",
@@ -52,7 +133,7 @@ function Pricing() {
 			name: "Plan Webflow Pro",
 			description:
 				"Para sitios de contenido dinámico con un diseño de alto impacto visual.",
-			price: "$120.000",
+			price: 120000,
 			period: "Pago Único",
 			features: [
 				"Diseño avanzado en Webflow",
@@ -64,20 +145,6 @@ function Pricing() {
 			highlighted: false,
 		},
 	];
-	const framerPlan = {
-		name: "Plan Premium Framer",
-		description:
-			"Para proyectos con animaciones de vanguardia y un look ultra moderno.",
-		price: "Desde $25.000",
-		period: "/mensual",
-		features: [
-			"Diseño web de alta gama en Framer",
-			"Animaciones fluidas y complejas",
-			"Optimización de rendimiento superior",
-			"Soporte y mantenimiento mensual",
-		],
-		cta: "Consultar Plan Mensual",
-	};
 
 	return (
 		<section id="pricing" className="py-20 px-6 bg-[var(--bg-dark)]">
@@ -98,6 +165,7 @@ function Pricing() {
 					<p className="text-xl text-[var(--text-secondary)] mb-8">
 						Precios transparentes y soluciones a la medida de tus necesidades.
 					</p>
+					{error && <p className="text-red-500 mt-4">{error}</p>}
 				</motion.div>
 
 				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
@@ -115,6 +183,11 @@ function Pricing() {
 									: "bg-[var(--bg-card)]/80 border border-[var(--border-gray-700)]"
 							}`}
 						>
+							{plan.hasOffer && (
+								<div className="absolute top-0 -right-4 bg-red-600 text-white text-xs font-bold px-4 py-1 rounded-full transform rotate-12 shadow-lg">
+									¡OFERTA ONLINE!
+								</div>
+							)}
 							<div className="text-center flex-grow">
 								<h3 className="text-2xl font-bold text-[var(--text-primary)] mb-2">
 									{plan.name}
@@ -124,23 +197,57 @@ function Pricing() {
 								</p>
 
 								<div className="mb-8 min-h-[5rem] flex flex-col justify-center">
-									<span className="text-4xl font-bold text-[var(--text-primary)]">
-										{plan.price}
-									</span>
+									{plan.hasOffer ? (
+										<>
+											<span className="text-2xl font-semibold text-gray-500 line-through">
+												${new Intl.NumberFormat("es-CL").format(plan.price)}
+											</span>
+											<span className="text-4xl font-bold text-green-400">
+												$
+												{new Intl.NumberFormat("es-CL").format(
+													plan.discountPrice
+												)}
+											</span>
+										</>
+									) : (
+										<span className="text-4xl font-bold text-[var(--text-primary)]">
+											${new Intl.NumberFormat("es-CL").format(plan.price)}
+										</span>
+									)}
 									<span className="text-[var(--text-secondary)] text-sm">
 										{plan.period}
 									</span>
 								</div>
 
-								<Link to="/contacto">
-									<motion.button
-										whileHover={{ scale: 1.05 }}
-										whileTap={{ scale: 0.95 }}
-										className="w-full py-3 px-6 rounded-full font-semibold transition-all duration-300 text-md mb-8 bg-gradient-to-r from-gray-200 to-white hover:from-gray-100 hover:to-gray-50 shadow-lg text-black"
-									>
-										{plan.cta}
-									</motion.button>
-								</Link>
+								{plan.hasOffer ? (
+									<div className="space-y-3 mb-8">
+										<p className="text-xs text-green-300 font-semibold">
+											Paga Online y Ahorra un 30%
+										</p>
+										<PaymentButton
+											gateway="mercadopago"
+											onPayment={handlePayment}
+											isLoading={isLoading}
+											plan={plan}
+										/>
+										<PaymentButton
+											gateway="flow"
+											onPayment={handlePayment}
+											isLoading={isLoading}
+											plan={plan}
+										/>
+									</div>
+								) : (
+									<Link to="/contacto">
+										<motion.button
+											whileHover={{ scale: 1.05 }}
+											whileTap={{ scale: 0.95 }}
+											className="w-full py-3 px-6 rounded-full font-semibold transition-all duration-300 text-md mb-8 bg-gradient-to-r from-gray-200 to-white hover:from-gray-100 hover:to-gray-50 shadow-lg text-black"
+										>
+											{plan.cta}
+										</motion.button>
+									</Link>
+								)}
 							</div>
 
 							<div className="flex-grow">
