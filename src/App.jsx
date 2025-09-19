@@ -16,8 +16,8 @@ const Services = lazy(() => import("@/pages/Services"));
 const Portfolio = lazy(() => import("@/pages/Portfolio"));
 const About = lazy(() => import("@/pages/About"));
 const Contact = lazy(() => import("@/pages/Contact"));
-// --- ¡NUEVA PÁGINA! ---
-const PostPaymentForm = lazy(() => import("@/pages/PostPaymentForm"));
+const Checkout = lazy(() => import("@/pages/Checkout")); // <-- 1. Importar la nueva página de checkout
+
 // ---------------------------------------------------------
 
 function App() {
@@ -29,6 +29,7 @@ function App() {
 			<div className="min-h-screen bg-background text-text relative">
 				<Navigation />
 				<main>
+					{/* Usamos Suspense para mostrar un loader mientras se carga el código de la página */}
 					<Suspense
 						fallback={
 							<div className="flex justify-center items-center h-screen">
@@ -42,8 +43,8 @@ function App() {
 							<Route path="/portafolio" element={<Portfolio />} />
 							<Route path="/nosotros" element={<About />} />
 							<Route path="/contacto" element={<Contact />} />
-							{/* --- ¡NUEVA RUTA! --- */}
-							<Route path="/post-pago" element={<PostPaymentForm />} />
+							<Route path="/checkout" element={<Checkout />} />{" "}
+							{/* <-- 2. Añadir la nueva ruta */}
 						</Routes>
 					</Suspense>
 				</main>
