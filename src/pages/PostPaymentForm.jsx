@@ -1,9 +1,19 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { CheckCircle, Loader, Send, XCircle, FileUp } from "lucide-react";
+import {
+	CheckCircle,
+	Loader,
+	Send,
+	XCircle,
+	FileUp,
+	AlertCircle,
+	RefreshCw,
+} from "lucide-react";
 
 const PostPaymentForm = () => {
-	const [status, setStatus] = useState("success"); // 'success', 'error', 'idle'
+	const [paymentStatus, setPaymentStatus] = useState("loading"); // 'loading', 'success', 'failed', 'pending', 'error'
+	const [paymentData, setPaymentData] = useState(null);
+	const [transactionId, setTransactionId] = useState(null);
 	const [formData, setFormData] = useState({
 		companyName: "",
 		socialMedia: "",
@@ -12,16 +22,94 @@ const PostPaymentForm = () => {
 		content: "",
 	});
 	const [formStatus, setFormStatus] = useState("idle"); // 'idle', 'loading', 'success', 'error'
+	const [retryCount, setRetryCount] = useState(0);
 
-	// Simula la verificación del estado del pago desde la URL (ej. Flow, MercadoPago)
+	// Verificar el estado del pago usando el backend
+	const verifyPayment = async (txnId) => {
+		try {
+			const backendUrl =
+				import.meta.env.VITE_BACKEND_URL || "http://localhost:8080";
+			const response = await fetch(`${backendUrl}/verify-payment/${txnId}`);
+
+			if (!response.ok) {
+				if (response.status === 404) {
+					throw new Error("Transacción no encontrada");
+				}
+				throw new Error("Error al verificar el pago");
+			}
+
+			const data = await response.json();
+			setPaymentData(data);
+
+			// Mapear estados de las pasarelas a nuestros estados internos
+			const status = data.status;
+			if (status === "approved" || status === "paid" || status === 2) {
+				setPaymentStatus("success");
+			} else if (
+				status === "rejected" ||
+				status === "cancelled" ||
+				status === "failed" ||
+				status === 3
+			) {
+				setPaymentStatus("failed");
+			} else if (
+				status === "pending" ||
+				status === "in_process" ||
+				status === 1
+			) {
+				setPaymentStatus("pending");
+			} else {
+				setPaymentStatus("error");
+			}
+		} catch (error) {
+			console.error("Error verificando pago:", error);
+			setPaymentStatus("error");
+		}
+	};
+
+	// Verificar el pago al cargar el componente
 	useEffect(() => {
 		const urlParams = new URLSearchParams(window.location.search);
-		// Aquí podrías añadir una lógica más robusta para verificar el token de pago
-		if (urlParams.has("token")) {
-			setStatus("success");
+		const txnId = urlParams.get("txn");
+
+		if (txnId) {
+			setTransactionId(txnId);
+			verifyPayment(txnId);
+		} else {
+			// Si no hay transaction ID, verificar si hay parámetros legacy
+			const hasToken = urlParams.has("token");
+			const collection_status = urlParams.get("collection_status");
+			const payment_status = urlParams.get("payment_status");
+
+			if (hasToken || collection_status || payment_status) {
+				// Manejo legacy - asumir éxito si hay parámetros
+				if (collection_status === "approved" || payment_status === "approved") {
+					setPaymentStatus("success");
+				} else if (
+					collection_status === "rejected" ||
+					payment_status === "rejected"
+				) {
+					setPaymentStatus("failed");
+				} else {
+					setPaymentStatus("pending");
+				}
+			} else {
+				setPaymentStatus("error");
+			}
 		}
-		// Si no, podrías establecer un estado de error o pendiente
 	}, []);
+
+	// Reintentar verificación para pagos pendientes
+	useEffect(() => {
+		if (paymentStatus === "pending" && transactionId && retryCount < 5) {
+			const timer = setTimeout(() => {
+				setRetryCount((prev) => prev + 1);
+				verifyPayment(transactionId);
+			}, 10000); // Reintentar cada 10 segundos
+
+			return () => clearTimeout(timer);
+		}
+	}, [paymentStatus, transactionId, retryCount]);
 
 	const handleChange = (e) => {
 		setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -32,14 +120,26 @@ const PostPaymentForm = () => {
 		setFormStatus("loading");
 
 		try {
-			// Usamos el mismo endpoint de email, pero con un cuerpo diferente
+			// Incluir información del pago en el envío
+			const dataToSend = {
+				subject: `Nuevos Detalles de Proyecto para: ${formData.companyName}`,
+				data: {
+					...formData,
+					paymentInfo: paymentData
+						? {
+								transactionId: paymentData.transactionId,
+								gateway: paymentData.gateway,
+								amount: paymentData.amount,
+								status: paymentData.status,
+						  }
+						: null,
+				},
+			};
+
 			const response = await fetch("/api/send_project_details.php", {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({
-					subject: `Nuevos Detalles de Proyecto para: ${formData.companyName}`,
-					data: formData,
-				}),
+				body: JSON.stringify(dataToSend),
 			});
 
 			if (!response.ok) {
@@ -50,6 +150,142 @@ const PostPaymentForm = () => {
 		} catch (error) {
 			console.error("Error al enviar el formulario:", error);
 			setFormStatus("error");
+		}
+	};
+
+	const handleRetryVerification = () => {
+		if (transactionId) {
+			setPaymentStatus("loading");
+			setRetryCount(0);
+			verifyPayment(transactionId);
+		}
+	};
+
+	const renderPaymentStatus = () => {
+		switch (paymentStatus) {
+			case "loading":
+				return (
+					<div className="text-center py-12">
+						<Loader className="w-16 h-16 text-primary mx-auto mb-4 animate-spin" />
+						<h1 className="text-4xl md:text-5xl font-bold mb-4">
+							Verificando tu pago...
+						</h1>
+						<p className="text-xl text-text-secondary">
+							Por favor espera mientras confirmamos el estado de tu transacción.
+						</p>
+					</div>
+				);
+
+			case "success":
+				return (
+					<div className="text-center mb-12">
+						<CheckCircle className="w-20 h-20 text-success mx-auto mb-4" />
+						<h1 className="text-4xl md:text-5xl font-bold mb-4">
+							¡Tu pago ha sido exitoso!
+						</h1>
+						<p className="text-xl text-text-secondary mb-4">
+							Ahora, el último paso. Completa el siguiente formulario para que
+							podamos comenzar a construir tu sitio web.
+						</p>
+						{paymentData && (
+							<div className="bg-card rounded-lg p-4 mb-6 text-sm">
+								<p>
+									<strong>ID de Transacción:</strong>{" "}
+									{paymentData.transactionId}
+								</p>
+								<p>
+									<strong>Monto:</strong> ${paymentData.amount} CLP
+								</p>
+								<p>
+									<strong>Pasarela:</strong> {paymentData.gateway}
+								</p>
+							</div>
+						)}
+					</div>
+				);
+
+			case "pending":
+				return (
+					<div className="text-center py-12">
+						<AlertCircle className="w-20 h-20 text-yellow-500 mx-auto mb-4" />
+						<h1 className="text-4xl md:text-5xl font-bold mb-4">
+							Tu pago está siendo procesado
+						</h1>
+						<p className="text-xl text-text-secondary mb-6">
+							Tu pago está pendiente de confirmación. Esto puede tomar unos
+							minutos. Estamos verificando automáticamente el estado.
+						</p>
+						{retryCount > 0 && (
+							<p className="text-sm text-text-muted mb-4">
+								Verificación {retryCount}/5 - Siguiente verificación en 10
+								segundos
+							</p>
+						)}
+						<button
+							onClick={handleRetryVerification}
+							className="bg-primary hover:bg-primary-hover text-white px-6 py-2 rounded-lg flex items-center gap-2 mx-auto"
+						>
+							<RefreshCw className="w-4 h-4" />
+							Verificar ahora
+						</button>
+					</div>
+				);
+
+			case "failed":
+				return (
+					<div className="text-center py-12">
+						<XCircle className="w-20 h-20 text-error mx-auto mb-4" />
+						<h1 className="text-4xl md:text-5xl font-bold mb-4">
+							Hubo un problema con el pago
+						</h1>
+						<p className="text-xl text-text-secondary mb-6">
+							Tu pago no pudo ser procesado. Por favor, verifica con tu banco o
+							intenta con otro método de pago.
+						</p>
+						{paymentData && paymentData.statusDetail && (
+							<div className="bg-red-900/20 border border-red-500 rounded-lg p-4 mb-6">
+								<p className="text-sm">
+									<strong>Detalle:</strong> {paymentData.statusDetail}
+								</p>
+							</div>
+						)}
+						<div className="space-y-4">
+							<button
+								onClick={handleRetryVerification}
+								className="bg-primary hover:bg-primary-hover text-white px-6 py-2 rounded-lg flex items-center gap-2 mx-auto"
+							>
+								<RefreshCw className="w-4 h-4" />
+								Verificar nuevamente
+							</button>
+							<p className="text-sm text-text-muted">
+								Si el problema persiste, contáctanos a través de nuestro email
+								de soporte.
+							</p>
+						</div>
+					</div>
+				);
+
+			case "error":
+			default:
+				return (
+					<div className="text-center py-12">
+						<XCircle className="w-20 h-20 text-error mx-auto mb-4" />
+						<h1 className="text-4xl md:text-5xl font-bold mb-4">
+							Error al verificar el pago
+						</h1>
+						<p className="text-xl text-text-secondary mb-6">
+							No pudimos verificar el estado de tu pago. Por favor, contáctanos
+							con los detalles de tu transacción.
+						</p>
+						<button
+							onClick={handleRetryVerification}
+							className="bg-primary hover:bg-primary-hover text-white px-6 py-2 rounded-lg flex items-center gap-2 mx-auto"
+						>
+							<RefreshCw className="w-4 h-4" />
+							Intentar nuevamente
+						</button>
+					</div>
+				);
 		}
 	};
 
@@ -72,10 +308,16 @@ const PostPaymentForm = () => {
 				<div className="text-center py-12">
 					<XCircle className="w-16 h-16 text-error mx-auto mb-4" />
 					<h3 className="text-2xl font-bold mb-2">Hubo un error.</h3>
-					<p className="text-text-secondary">
+					<p className="text-text-secondary mb-4">
 						No pudimos recibir tu información. Por favor, contáctanos
 						directamente a nuestro email.
 					</p>
+					<button
+						onClick={() => setFormStatus("idle")}
+						className="bg-primary hover:bg-primary-hover text-white px-6 py-2 rounded-lg"
+					>
+						Intentar nuevamente
+					</button>
 				</div>
 			);
 		}
@@ -132,9 +374,9 @@ const PostPaymentForm = () => {
 				<motion.button
 					type="submit"
 					disabled={formStatus === "loading"}
-					className="w-full bg-gradient-to-r from-primary to-accent hover:from-primary-hover hover:to-primary text-white font-semibold py-4 rounded-lg flex items-center justify-center gap-2"
-					whileHover={{ scale: 1.02 }}
-					whileTap={{ scale: 0.98 }}
+					className="w-full bg-gradient-to-r from-primary to-accent hover:from-primary-hover hover:to-primary text-white font-semibold py-4 rounded-lg flex items-center justify-center gap-2 disabled:opacity-50"
+					whileHover={{ scale: formStatus === "loading" ? 1 : 1.02 }}
+					whileTap={{ scale: formStatus === "loading" ? 1 : 0.98 }}
 				>
 					{formStatus === "loading" ? (
 						<Loader className="animate-spin" />
@@ -158,32 +400,10 @@ const PostPaymentForm = () => {
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ duration: 0.8 }}
 				>
-					{status === "success" && (
-						<div className="text-center mb-12">
-							<CheckCircle className="w-20 h-20 text-success mx-auto mb-4" />
-							<h1 className="text-4xl md:text-5xl font-bold mb-4">
-								¡Tu pago ha sido exitoso!
-							</h1>
-							<p className="text-xl text-text-secondary">
-								Ahora, el último paso. Completa el siguiente formulario para que
-								podamos comenzar a construir tu sitio web.
-							</p>
-						</div>
-					)}
-					{status === "error" && (
-						<div className="text-center mb-12">
-							<XCircle className="w-20 h-20 text-error mx-auto mb-4" />
-							<h1 className="text-4xl md:text-5xl font-bold mb-4">
-								Hubo un problema con el pago
-							</h1>
-							<p className="text-xl text-text-secondary">
-								Por favor, verifica con tu banco o contáctanos para ayudarte.
-							</p>
-						</div>
-					)}
+					{renderPaymentStatus()}
 				</motion.div>
 
-				{status === "success" && (
+				{paymentStatus === "success" && (
 					<motion.div
 						className="bg-card rounded-2xl p-8"
 						initial={{ opacity: 0, y: 20 }}
