@@ -5,7 +5,6 @@ function Pricing() {
 	const navigate = useNavigate();
 
 	const handleSelectPlan = (plan) => {
-		// Navega a la página de checkout y pasa los datos del plan en el estado.
 		navigate("/checkout", { state: { plan } });
 	};
 
@@ -26,6 +25,7 @@ function Pricing() {
 			cta: "Comenzar ahora",
 			highlighted: false,
 			hasOffer: true,
+			offerLabel: "30% OFF", // <-- CAMBIO: Etiqueta específica para la oferta.
 		},
 		{
 			name: "Plan Emprendedor",
@@ -110,9 +110,10 @@ function Pricing() {
 									: "bg-[var(--bg-card)]/80 border border-[var(--border-gray-700)]"
 							}`}
 						>
+							{/* <-- CAMBIO: Lógica de la oferta mejorada visualmente --> */}
 							{plan.hasOffer && (
-								<div className="absolute top-0 -right-4 bg-red-600 text-white text-xs font-bold px-4 py-1 rounded-full transform rotate-12 shadow-lg">
-									¡OFERTA ONLINE!
+								<div className="absolute top-4 right-4 bg-accent text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">
+									{plan.offerLabel}
 								</div>
 							)}
 							<div className="text-center flex-grow">
@@ -123,17 +124,25 @@ function Pricing() {
 									{plan.description}
 								</p>
 
-								<div className="mb-8 min-h-[5rem] flex flex-col justify-center">
+								<div className="mb-8 min-h-[7rem] flex flex-col justify-center">
 									{plan.hasOffer ? (
 										<>
 											<span className="text-2xl font-semibold text-gray-500 line-through">
 												${new Intl.NumberFormat("es-CL").format(plan.price)}
 											</span>
-											<span className="text-4xl font-bold text-green-400">
+											<span className="text-5xl font-bold text-green-400 my-1">
 												$
 												{new Intl.NumberFormat("es-CL").format(
 													plan.discountPrice
 												)}
+											</span>
+											{/* <-- CAMBIO: Añadido el cálculo del ahorro --> */}
+											<span className="text-sm font-semibold text-green-300 bg-green-500/20 px-2 py-1 rounded-md">
+												¡Ahorras $
+												{new Intl.NumberFormat("es-CL").format(
+													plan.price - plan.discountPrice
+												)}
+												!
 											</span>
 										</>
 									) : (
@@ -141,7 +150,7 @@ function Pricing() {
 											${new Intl.NumberFormat("es-CL").format(plan.price)}
 										</span>
 									)}
-									<span className="text-[var(--text-secondary)] text-sm">
+									<span className="text-[var(--text-secondary)] text-sm mt-2">
 										{plan.period}
 									</span>
 								</div>
@@ -150,13 +159,14 @@ function Pricing() {
 									onClick={() => handleSelectPlan(plan)}
 									whileHover={{ scale: 1.05 }}
 									whileTap={{ scale: 0.95 }}
+									// <-- CAMBIO: Texto del botón condicional para la oferta -->
 									className={`w-full py-3 px-6 rounded-full font-semibold transition-all duration-300 text-md mb-8 ${
-										plan.highlighted
+										plan.highlighted || plan.hasOffer
 											? "bg-gradient-to-r from-primary to-accent text-white shadow-lg"
 											: "bg-gradient-to-r from-gray-200 to-white hover:from-gray-100 hover:to-gray-50 shadow-lg text-black"
 									}`}
 								>
-									{plan.cta}
+									{plan.hasOffer ? "Aprovechar Oferta" : plan.cta}
 								</motion.button>
 							</div>
 

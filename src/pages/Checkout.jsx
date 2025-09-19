@@ -12,11 +12,9 @@ import {
 	ArrowLeft,
 	CheckCircle,
 } from "lucide-react";
-import logoFlow from "../assets/logos/logoflow.png"; // <-- 1. IMPORTAR LOGO LOCAL
+import logoFlow from "../assets/logos/logoflow.png";
 
-// --- Componentes de Apoyo Internos ---
-
-// Stepper para guiar al usuario
+// --- Componentes de Apoyo Internos (sin cambios) ---
 const CheckoutStepper = ({ currentStep }) => {
 	const steps = ["Tus Datos", "Pago"];
 	return (
@@ -47,8 +45,6 @@ const CheckoutStepper = ({ currentStep }) => {
 		</div>
 	);
 };
-
-// Componente para un campo de formulario reutilizable
 const FormInput = ({ icon, ...props }) => (
 	<div className="relative">
 		<span className="absolute inset-y-0 left-0 flex items-center pl-3 text-text-muted pointer-events-none">
@@ -60,8 +56,6 @@ const FormInput = ({ icon, ...props }) => (
 		/>
 	</div>
 );
-
-// Componente para el botón de selección de método de pago
 const PaymentMethodButton = ({ method, logo, selectedMethod, onSelect }) => (
 	<button
 		onClick={() => onSelect(method.toLowerCase())}
@@ -83,6 +77,7 @@ const PaymentMethodButton = ({ method, logo, selectedMethod, onSelect }) => (
 		)}
 	</button>
 );
+// --- Fin de Componentes de Apoyo ---
 
 const Checkout = () => {
 	const location = useLocation();
@@ -313,7 +308,7 @@ const Checkout = () => {
 								<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
 									<PaymentMethodButton
 										method="Flow"
-										logo={logoFlow} // <-- 2. USAR EL LOGO IMPORTADO
+										logo={logoFlow}
 										selectedMethod={paymentMethod}
 										onSelect={setPaymentMethod}
 									/>
@@ -336,16 +331,23 @@ const Checkout = () => {
 						<div className="bg-card p-8 rounded-2xl sticky top-32">
 							<h3 className="text-xl font-bold mb-6">Resumen del Pedido</h3>
 							<div className="space-y-4">
-								<div className="flex justify-between">
+								<div className="flex justify-between items-center">
 									<span className="text-text-secondary">{plan.name}</span>
-									<span className="font-semibold">
+									<span
+										className={`font-semibold ${
+											plan.discountPrice ? "text-text-muted line-through" : ""
+										}`}
+									>
 										${new Intl.NumberFormat("es-CL").format(plan.price)}
 									</span>
 								</div>
+								{/* <-- CAMBIO: Mejora visual del descuento --> */}
 								{plan.discountPrice && (
-									<div className="flex justify-between text-success">
-										<span>Descuento Online</span>
-										<span className="font-semibold">
+									<div className="flex justify-between items-center bg-green-500/10 p-2 rounded-md">
+										<span className="text-sm font-semibold text-green-300">
+											Descuento Exclusivo Online
+										</span>
+										<span className="font-bold text-green-300">
 											-$
 											{new Intl.NumberFormat("es-CL").format(
 												plan.price - plan.discountPrice

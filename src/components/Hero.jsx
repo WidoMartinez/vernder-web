@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { motion as Motion, useScroll, useTransform } from "framer-motion";
-import { Link } from "react-router-dom"; // Importar Link
+import { Link } from "react-router-dom";
 import { RainbowButton } from "./magicui/rainbow-button";
 import crmDashboard from "../assets/crm-dashboard.png";
 
@@ -38,9 +38,22 @@ function Hero() {
 						optimizada para captar clientes y con entrega rápida.
 					</p>
 
+					{/* <-- CAMBIO: Añadido anuncio de la oferta --> */}
+					<Motion.div
+						initial={{ opacity: 0, y: 20 }}
+						animate={{ opacity: 1, y: 0 }}
+						transition={{ duration: 0.8, delay: 0.2 }}
+						className="inline-block bg-primary/20 border border-primary/50 text-amber-100 rounded-full px-4 py-2 text-sm font-semibold mb-8"
+					>
+						¡Aprovecha un <span className="font-bold">30% de descuento</span> en
+						nuestro Plan Básico por tiempo limitado!
+					</Motion.div>
+
 					<div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-						<Link to="/contacto">
-							<RainbowButton size="lg">Quiero mi Página Web</RainbowButton>
+						<Link to="/#pricing">
+							{" "}
+							{/* <-- CAMBIO: Enlace a la sección de precios --> */}
+							<RainbowButton size="lg">Ver Planes y Oferta</RainbowButton>
 						</Link>
 					</div>
 				</Motion.div>

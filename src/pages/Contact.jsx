@@ -178,7 +178,7 @@ const Contact = () => {
 							value={formData.email}
 							onChange={handleChange}
 							className="w-full px-4 py-3 bg-secondary border border-text-muted rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-text placeholder-text-muted"
-							placeholder="tu.correo@ejemplo.com"
+							placeholder="tu.correo@ejemplo.cl"
 						/>
 					</div>
 				</div>
