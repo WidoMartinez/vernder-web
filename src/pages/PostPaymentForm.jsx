@@ -1,17 +1,16 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react"; // 1. Importar useRef
 import { motion } from "framer-motion";
 import {
 	CheckCircle,
 	Loader,
 	Send,
 	XCircle,
-	FileUp,
 	AlertCircle,
 	RefreshCw,
 } from "lucide-react";
 
 const PostPaymentForm = () => {
-	const [paymentStatus, setPaymentStatus] = useState("loading"); // 'loading', 'success', 'failed', 'pending', 'error'
+	const [paymentStatus, setPaymentStatus] = useState("loading");
 	const [paymentData, setPaymentData] = useState(null);
 	const [transactionId, setTransactionId] = useState(null);
 	const [formData, setFormData] = useState({
@@ -21,10 +20,25 @@ const PostPaymentForm = () => {
 		references: "",
 		content: "",
 	});
-	const [formStatus, setFormStatus] = useState("idle"); // 'idle', 'loading', 'success', 'error'
+	const [formStatus, setFormStatus] = useState("idle");
 	const [retryCount, setRetryCount] = useState(0);
 
-	// Verificar el estado del pago usando el backend
+	// 2. Usar useRef para evitar que el evento se dispare múltiples veces
+	const conversionSentRef = useRef(false);
+
+	// Función para el seguimiento de conversiones de Google Ads
+	const trackConversion = (data) => {
+		if (typeof gtag === "function" && data) {
+			gtag("event", "conversion", {
+				send_to: "AW-17566977229/6cctCNTo2J0bEM2Zy7hB",
+				value: data.amount || 1.0, // Usar el valor real de la transacción
+				currency: "CLP",
+				transaction_id: data.transactionId, // Usar el ID de transacción único
+			});
+			console.log("✅ Conversión de compra registrada:", data);
+		}
+	};
+
 	const verifyPayment = async (txnId) => {
 		try {
 			const backendUrl =
@@ -32,19 +46,24 @@ const PostPaymentForm = () => {
 			const response = await fetch(`${backendUrl}/verify-payment/${txnId}`);
 
 			if (!response.ok) {
-				if (response.status === 404) {
-					throw new Error("Transacción no encontrada");
-				}
-				throw new Error("Error al verificar el pago");
+				throw new Error(
+					response.status === 404
+						? "Transacción no encontrada"
+						: "Error al verificar el pago"
+				);
 			}
 
 			const data = await response.json();
 			setPaymentData(data);
 
-			// Mapear estados de las pasarelas a nuestros estados internos
 			const status = data.status;
 			if (status === "approved" || status === "paid" || status === 2) {
 				setPaymentStatus("success");
+				// 3. Disparar el evento solo si es exitoso y no se ha enviado antes
+				if (!conversionSentRef.current) {
+					trackConversion(data);
+					conversionSentRef.current = true;
+				}
 			} else if (
 				status === "rejected" ||
 				status === "cancelled" ||
@@ -52,14 +71,8 @@ const PostPaymentForm = () => {
 				status === 3
 			) {
 				setPaymentStatus("failed");
-			} else if (
-				status === "pending" ||
-				status === "in_process" ||
-				status === 1
-			) {
-				setPaymentStatus("pending");
 			} else {
-				setPaymentStatus("error");
+				setPaymentStatus("pending");
 			}
 		} catch (error) {
 			console.error("Error verificando pago:", error);
@@ -67,7 +80,6 @@ const PostPaymentForm = () => {
 		}
 	};
 
-	// Verificar el pago al cargar el componente
 	useEffect(() => {
 		const urlParams = new URLSearchParams(window.location.search);
 		const txnId = urlParams.get("txn");
@@ -76,36 +88,16 @@ const PostPaymentForm = () => {
 			setTransactionId(txnId);
 			verifyPayment(txnId);
 		} else {
-			// Si no hay transaction ID, verificar si hay parámetros legacy
-			const hasToken = urlParams.has("token");
-			const collection_status = urlParams.get("collection_status");
-			const payment_status = urlParams.get("payment_status");
-
-			if (hasToken || collection_status || payment_status) {
-				// Manejo legacy - asumir éxito si hay parámetros
-				if (collection_status === "approved" || payment_status === "approved") {
-					setPaymentStatus("success");
-				} else if (
-					collection_status === "rejected" ||
-					payment_status === "rejected"
-				) {
-					setPaymentStatus("failed");
-				} else {
-					setPaymentStatus("pending");
-				}
-			} else {
-				setPaymentStatus("error");
-			}
+			setPaymentStatus("error");
 		}
 	}, []);
 
-	// Reintentar verificación para pagos pendientes
 	useEffect(() => {
 		if (paymentStatus === "pending" && transactionId && retryCount < 5) {
 			const timer = setTimeout(() => {
 				setRetryCount((prev) => prev + 1);
 				verifyPayment(transactionId);
-			}, 10000); // Reintentar cada 10 segundos
+			}, 10000);
 
 			return () => clearTimeout(timer);
 		}
@@ -120,7 +112,6 @@ const PostPaymentForm = () => {
 		setFormStatus("loading");
 
 		try {
-			// Incluir información del pago en el envío
 			const dataToSend = {
 				subject: `Nuevos Detalles de Proyecto para: ${formData.companyName}`,
 				data: {
